@@ -1,6 +1,5 @@
 import Customer from '../schema/customer-schema.js'
 
-
 export const addCustomer = async (request, response) => {
     const customer = request.body;
     const newCustomer = new Customer(customer);
@@ -15,8 +14,8 @@ export const addCustomer = async (request, response) => {
 
 export const getCustomers = async (request, response) => {
     try {
-        const constomers = await Customer.find({});
-        response.status(200).json(constomers);
+        const customers = await Customer.find({});
+        response.status(200).json(customers);
     } catch (error) {
         response.status(404).json({ message: error.message })
     }
@@ -24,41 +23,41 @@ export const getCustomers = async (request, response) => {
 
 export const getCustomer = async (request, response) => {
     try {
-        const constomer = await Customer.findById(request.params.id);
-        response.status(200).json(constomer);
+        const customer = await Customer.findById(request.params.id);
+        response.status(200).json(customer);
     } catch (error) {
         response.status(404).json({ message: error.message })
     }
 }
 
 export const editCustomer = async (request, response) => {
-    let customer = request.body
-    const editc = new Customer(customer)
+    const customer = request.body;
     try {
-        await Customer.updateOne({ _id: request.params.id }, editc);
-        response.status(201).json(editc);
+        const updated = await Customer.findByIdAndUpdate(request.params.id, customer, { new: true });
+        response.status(200).json(updated);
     } catch (error) {
         response.status(409).json({ message: error.message })
     }
 }
-
 
 export const deleteCustomer = async (request, response) => {
     try {
         await Customer.deleteOne({ _id: request.params.id })
-        response.status(201).json({ message: "Deleted successfully" });
+        response.status(200).json({ message: "Deleted successfully" });
     } catch (error) {
         response.status(409).json({ message: error.message })
     }
 }
 
-
 export const changeStatus = async (request, response) => {
     try {
-        const customer = await Customer.findByIdAndUpdate(request.params.id, { status: newStatus }, { new: true });
-        response.status(201).json(customer);
+        const customer = await Customer.findByIdAndUpdate(
+            request.params.id,
+            { status: request.body.status, time2: request.body.time2 },
+            { new: true }
+        );
+        response.status(200).json(customer);
     } catch (error) {
         response.status(404).json({ message: error.message })
     }
 }
-

@@ -80,8 +80,8 @@ const Orders = () => {
     }, []);
 
     const getAllCustomers = async () => {
-        let response = await getCustomers();
-        const orders = response.data.filter(e => e.status === 'Pending-Order');
+        let response = await getOrders();
+        const orders = response.data.filter(e => e.status === 'pending');
         setOrder(orders);
 
     }
@@ -90,15 +90,15 @@ const Orders = () => {
 
     const markChecked = async (id, newStatus) => {
         try {
-            await changeStatus(id, newStatus);
+            await changeOrderStatus(id, newStatus);
             getAllCustomers();
         } catch (error) {
             console.log('Error while marking customer as checked', error);
         }
     }
 
-    const deleteCustomerDetails = async (id) => {
-        await deleteCustomer(id);
+    const deleteOrderDetails = async (id) => {
+        await deleteOrder(id);
         getAllCustomers();
     }
 
@@ -146,11 +146,11 @@ const Orders = () => {
 
                                         <TableCell>
                                             <Tooltip title={<h2 style={{ color: "white" }}>Order Complete</h2>} style={{ fontSize: 30 }} placement="top" >
-                                                <Button variant='contained' style={{ marginRight: 10 }} color='success' onClick={() => markChecked(order._id, 'Complete-Order')}>
+                                                <Button variant='contained' style={{ marginRight: 10 }} color='success' onClick={() => markChecked(order._id, 'complete')}>
                                                     Complete
                                                 </Button>
                                             </Tooltip>
-                                            <Button><DeleteIcon color='error' onClick={() => deleteCustomerDetails(order._id)} /></Button>
+                                            <Button><DeleteIcon color='error' onClick={() => deleteOrderDetails(order._id)} /></Button>
 
                                         </TableCell>
                                     </TBody>

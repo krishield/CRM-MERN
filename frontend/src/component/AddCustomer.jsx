@@ -84,7 +84,14 @@ const AddCustomer = () => {
     }
 
     const addOrderDetails = async () => {
-        order.status='Pending-Order'
+        const currentTime = new Date().toLocaleTimeString('en-IN', {
+            timeZone: 'Asia/Kolkata', hour12: true, hour: 'numeric', minute: 'numeric'
+        });
+        const currentDate = new Date().toLocaleString('en-IN', {
+            timeZone: 'Asia/Kolkata', day: 'numeric', month: 'long', year: 'numeric'
+        });
+        order.time = currentTime;
+        order.date = currentDate;
         await addOrder(order);
         nevigate('/orders')
     }

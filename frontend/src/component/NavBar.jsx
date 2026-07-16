@@ -1,61 +1,53 @@
-import { NavLink } from 'react-router-dom';
-import { Tabs, Tab, styled } from '@mui/material';
-import { AppBar, Toolbar } from "@material-ui/core";
-import { useState } from 'react';;
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
+import { AppBar, Toolbar, Tabs, Tab, IconButton, Tooltip } from '@mui/material';
+import LogoutIcon from '@mui/icons-material/Logout';
 
-const Header = styled(AppBar)`
-  background : #4AAF12;
-   
-`;
-
-const TabbContainer = styled(Tabs)`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const Tabb = styled(Tab)`
-  color: white;
-  font-weight: bold;
-  font-size: 18px;
-  transition: all 0.1s ease-in-out;
-
-
-&:hover {
-  background-color: rgba(255, 255, 255, 0.08);
-  border-radius: 4px;
-  font-size: 20px;
-  
-}
-.MuiTab-wrapper {
-  transition: all 1.3s ease-in-out;
-}
-&.Mui-selected {
-  background-color: rgba(255, 255, 255, 0.2);
-  color: white;
-  font-size: 20px;
-
-}
-`;
+const tabs = [
+  { label: 'Add Customer', to: '/' },
+  { label: 'Pending', to: '/pending' },
+  { label: 'Checked', to: '/checked' },
+  { label: 'Completed', to: '/completed' },
+  { label: 'All Customers', to: '/all' },
+  { label: 'Orders', to: '/orders' },
+  { label: 'All Orders', to: '/Allorders' },
+];
 
 const NavBar = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const [value, setValue] = useState(0);
+  const currentTab = tabs.some(t => t.to === location.pathname) ? location.pathname : false;
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
   };
 
+  if (location.pathname === '/login') {
+    return null;
+  }
+
   return (
-    <Header position="static">
-      <Toolbar>
-        <TabbContainer value={value} onChange={handleChange}>
-          <Tabb label="Home" to="/pending" component={NavLink} />
-          <Tabb label="Login" to="/checked" component={NavLink} />
-          <Tabb label="Data" to="/completed" component={NavLink} />
-          <Tabb label="Register" to="/orders" component={NavLink} />
-        </TabbContainer>
+    <AppBar position="static" color="primary">
+      <Toolbar sx={{ justifyContent: 'space-between' }}>
+        <Tabs
+          value={currentTab}
+          textColor="inherit"
+          indicatorColor="secondary"
+          variant="scrollable"
+          scrollButtons="auto"
+        >
+          {tabs.map(tab => (
+            <Tab key={tab.to} label={tab.label} value={tab.to} to={tab.to} component={NavLink} />
+          ))}
+        </Tabs>
+        <Tooltip title="Logout">
+          <IconButton color="inherit" onClick={handleLogout}>
+            <LogoutIcon />
+          </IconButton>
+        </Tooltip>
       </Toolbar>
-    </Header>
+    </AppBar>
   );
 };
 

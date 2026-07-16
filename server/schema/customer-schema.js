@@ -6,7 +6,7 @@ const customerSchema = mongoose.Schema({
     name: String,
     mobile: String,
     problem: String,
-    cost: Number,
+    cost: String,
     note: String,
     date: String,
     time: String,

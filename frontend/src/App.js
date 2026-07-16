@@ -11,6 +11,7 @@ import Completed from './component/Completed.jsx';
 import LoginForm from './component/Login.jsx'
 import AllOrders from './component/AllOrders.jsx';
 import Orders from './component/Orders.jsx';
+import PrivateRoute from './component/PrivateRoute.jsx';
 
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 
@@ -18,18 +19,18 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <NavBar />        
+        <NavBar />
         <Routes>
-          <Route path='/' element={<AddCustomer />} />
-          <Route path='/pending' element={<Pending />} />
-          <Route path='/checked' element={<Checked />} />
-          <Route path='/completed' element={<Completed />} />
-          <Route path='/all' element={<AllCustomers />} />
-          <Route path='/edit/:id' element={<EditCustomer />} />
-          <Route path='/info/:id' element={<Details />} />
           <Route path='/login' element={<LoginForm />} />
-          <Route path='/Allorders' element={<AllOrders />} />
-          <Route path='/orders' element={<Orders />} />
+          <Route path='/' element={<PrivateRoute><AddCustomer /></PrivateRoute>} />
+          <Route path='/pending' element={<PrivateRoute><Pending /></PrivateRoute>} />
+          <Route path='/checked' element={<PrivateRoute><Checked /></PrivateRoute>} />
+          <Route path='/completed' element={<PrivateRoute><Completed /></PrivateRoute>} />
+          <Route path='/all' element={<PrivateRoute><AllCustomers /></PrivateRoute>} />
+          <Route path='/edit/:id' element={<PrivateRoute><EditCustomer /></PrivateRoute>} />
+          <Route path='/info/:id' element={<PrivateRoute><Details /></PrivateRoute>} />
+          <Route path='/Allorders' element={<PrivateRoute><AllOrders /></PrivateRoute>} />
+          <Route path='/orders' element={<PrivateRoute><Orders /></PrivateRoute>} />
         </Routes>
       </BrowserRouter>
     </div>

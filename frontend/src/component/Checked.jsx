@@ -120,7 +120,7 @@ const Checked = () => {
                             {
                                 customers.map(customer => (
                                     <TBody key={customer._id}>
-                                        <TableCell>{customer._id}</TableCell>
+                                        <TableCell>{customer.customerId}</TableCell>
                                         <TableCell>{customer.date + ' @ ' + customer.time}</TableCell>
                                         <TableCell>{customer.name}</TableCell>
                                         <TableCell>{customer.mobile}</TableCell>

@@ -1,10 +1,13 @@
 import Customer from '../schema/customer-schema.js'
+import { nextSequence } from '../schema/counter-schema.js'
 
 export const addCustomer = async (request, response) => {
     const customer = request.body;
-    const newCustomer = new Customer(customer);
 
     try {
+        const seq = await nextSequence('customer');
+        customer.customerId = `KD${String(seq).padStart(3, '0')}`;
+        const newCustomer = new Customer(customer);
         await newCustomer.save();
         response.status(201).json(newCustomer);
     } catch (error) {

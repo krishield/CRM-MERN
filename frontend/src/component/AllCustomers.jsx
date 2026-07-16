@@ -136,7 +136,7 @@ const Allcustomers = () => {
                                 {
                                     customers.map(customer => (
                                         <TBody key={customer._id}>
-                                            <TableCell>{customer._id}</TableCell>
+                                            <TableCell>{customer.customerId}</TableCell>
                                             <TableCell>{customer.name}</TableCell>
                                             <TableCell>{customer.mobile}</TableCell>
                                             <TableCell>{customer.device}</TableCell>

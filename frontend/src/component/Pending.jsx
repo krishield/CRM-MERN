@@ -1,95 +1,88 @@
-import React from 'react';
-import { Container, Typography, Button, Box, Grid, TextField } from '@mui/material';
-import { styled } from '@mui/system';
+import { useEffect, useState } from 'react';
+import { Table, TableHead, TableRow, TableCell, TableBody, Button, Tooltip, Paper } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { getCustomers, changeStatus } from '../services/api.js';
+import styled from 'styled-components';
 
-const HeroSection = styled(Box)({
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-  height: '80vh',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  color: 'white',
-  textAlign: 'center',
-  position: 'relative',
-});
+const StyleTable = styled(Table)`
+    width: 90%;
+    margin: 50px auto 0 auto;
+`;
 
-const SearchBox = styled(Box)({
-  backgroundColor: 'rgba(0, 0, 0, 0.6)',
-  padding: '20px',
-  borderRadius: '10px',
-});
+const THead = styled(TableRow)`
+    & > th {
+        font-size: 18px;
+        background-color: #054F81;
+        color: #fff;
+        text-align: center;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+`;
 
-const HomePage = () => {
-  return (
-    <Container maxWidth="lg">
-      {/* Hero Section */}
-      <HeroSection>
-        <Box>
-          <Typography variant="h3" fontWeight="bold" gutterBottom>
-            Rajpurohit Matrimony
-          </Typography>
-          <Typography variant="h6" gutterBottom>
-            Join the most trusted matrimony site for finding life partners.
-          </Typography>
-          <SearchBox>
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={4}>
-                <TextField fullWidth label="Search by Name" variant="outlined" />
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <TextField fullWidth label="Age" variant="outlined" />
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <TextField fullWidth label="Religion" variant="outlined" />
-              </Grid>
-            </Grid>
-            <Button variant="contained" color="primary" size="large" sx={{ mt: 2 }}>
-              Search Now
-            </Button>
-          </SearchBox>
-        </Box>
-      </HeroSection>
+const TBody = styled(TableRow)`
+    & > td {
+        font-size: 16px;
+        text-align: center;
+    }
+`;
 
-      {/* Featured Profiles */}
-      <Box mt={5}>
-        <Typography variant="h4" fontWeight="bold" gutterBottom>
-          Featured Profiles
-        </Typography>
-        <Grid container spacing={4}>
-          {/* Sample profiles */}
-          <Grid item xs={12} md={4}>
-            <Box textAlign="center">
-              <img
-                src="https://via.placeholder.com/200"
-                alt="Profile"
-                style={{ borderRadius: '50%', width: '150px', height: '150px' }}
-              />
-              <Typography variant="h6" fontWeight="bold" mt={2}>
-                John Doe
-              </Typography>
-              <Typography>28, Hindu, Engineer</Typography>
-              <Button variant="outlined" color="primary" sx={{ mt: 2 }}>
-                View Profile
-              </Button>
-            </Box>
-          </Grid>
-          {/* Add more profiles similarly */}
-        </Grid>
-      </Box>
+const Pending = () => {
+    const [customers, setCustomers] = useState([]);
 
-      {/* Call to Action */}
-      <Box textAlign="center" mt={5}>
-        <Typography variant="h4" fontWeight="bold" gutterBottom>
-          Ready to Start Your Journey?
-        </Typography>
-        <Button variant="contained" color="secondary" size="large" component={Link} to="/signup">
-          Join Now
-        </Button>
-      </Box>
-    </Container>
-  );
-};
+    useEffect(() => {
+        loadPending();
+    }, []);
 
-export default HomePage;
+    const loadPending = async () => {
+        const response = await getCustomers();
+        setCustomers(response.data.filter(c => c.status === 'pending'));
+    }
+
+    const markChecked = async (id) => {
+        await changeStatus(id, 'checked');
+        loadPending();
+    }
+
+    return (
+        <Paper>
+            <StyleTable>
+                <TableHead>
+                    <THead>
+                        <TableCell>Id</TableCell>
+                        <TableCell>Date</TableCell>
+                        <TableCell>Name</TableCell>
+                        <TableCell>Contact</TableCell>
+                        <TableCell>Device</TableCell>
+                        <TableCell>Problem</TableCell>
+                        <TableCell>Cost</TableCell>
+                        <TableCell>Actions</TableCell>
+                    </THead>
+                </TableHead>
+                <TableBody>
+                    {customers.map(customer => (
+                        <TBody key={customer._id}>
+                            <TableCell>{customer._id}</TableCell>
+                            <TableCell>{customer.date + ' @ ' + customer.time}</TableCell>
+                            <TableCell>{customer.name}</TableCell>
+                            <TableCell>{customer.mobile}</TableCell>
+                            <TableCell>{customer.device}</TableCell>
+                            <TableCell>{customer.problem}</TableCell>
+                            <TableCell>{customer.cost}</TableCell>
+                            <TableCell>
+                                <Tooltip title="Mark as Checked">
+                                    <Button variant="contained" color="secondary" sx={{ mr: 1 }} onClick={() => markChecked(customer._id)}>
+                                        Check
+                                    </Button>
+                                </Tooltip>
+                                <Button variant="contained" color="info" component={Link} to={`/edit/${customer._id}`}>Edit</Button>
+                            </TableCell>
+                        </TBody>
+                    ))}
+                </TableBody>
+            </StyleTable>
+        </Paper>
+    );
+}
+
+export default Pending;

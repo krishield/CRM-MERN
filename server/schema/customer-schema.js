@@ -1,7 +1,4 @@
 import mongoose from "mongoose";
-import autoIncrement from 'mongoose-auto-increment'
-
-autoIncrement.initialize(mongoose.connection);
 
 const customerSchema = mongoose.Schema({
     device: String,
@@ -9,20 +6,18 @@ const customerSchema = mongoose.Schema({
     name: String,
     mobile: String,
     problem: String,
-    cost: String,
+    cost: Number,
     note: String,
     date: String,
     time: String,
-    status: String,
+    status: {
+        type: String,
+        enum: ['pending', 'checked', 'completed', 'repaired', 'not-repaired'],
+        default: 'pending',
+    },
     time2: String,
-    productDetails: String,
-    totalAmount: String,
-    advanceAmount: String,
-});
+}, { timestamps: true });
 
-// Update plugin usage to use promises
-customerSchema.plugin(autoIncrement.plugin, { model: 'customer', field: '_id', startAt: 1 });
+const Customer = mongoose.model('customer', customerSchema);
 
-const customer = mongoose.model('customer', customerSchema);
-
-export default customer;
+export default Customer;

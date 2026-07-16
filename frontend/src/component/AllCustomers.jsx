@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Table, TableHead, TableRow, TableCell, TableBody, Button } from '@mui/material'
-import Chip from '@material-ui/core/Chip';
-import Paper from '@material-ui/core/Paper';
-import SearchBar from 'material-ui-search-bar';
+import { Table, TableHead, TableRow, TableCell, TableBody, Button, Chip, Paper, TextField, InputAdornment } from '@mui/material'
+import SearchIcon from '@mui/icons-material/Search';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { getCustomers, deleteCustomer } from '../services/api.js';
 import { Link } from "react-router-dom";
@@ -92,6 +90,7 @@ const Allcustomers = () => {
     }
 
     const requestSearch = (searchedVal) => {
+        setSearched(searchedVal);
         const filteredCustomers = originalCustomers.filter((customer) => {
           const lowerCaseName = customer.name.toLowerCase();
           const lowerCaseMobile = customer.mobile.toLowerCase();
@@ -101,28 +100,24 @@ const Allcustomers = () => {
         setCustomer(filteredCustomers);
     };
 
-    const cancelSearch = () => {
-        setCustomer(originalCustomers);
-        setSearched("");
-    };
-
     return (
         <Loading isLoading={isLoading}>
             {isLoading ? <div>Loading...</div> : (
                 <div>
                     <Paper>
-                        <SearchBar
+                        <TextField
                             value={searched}
-                            onChange={(searchval) => requestSearch(searchval)}
-                            onCancelSearch={() => cancelSearch()}
-                            style={{
-                                height: '50px',
-                                fontSize: '17px',
-                                width: '50%',
-                                margin: '50px auto 0 auto',
-                                backgroundColor: '#9ff5ec', // set the background color here
-                                color: 'black' // set the text color here
+                            onChange={(e) => requestSearch(e.target.value)}
+                            placeholder="Search"
+                            variant="outlined"
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <SearchIcon />
+                                    </InputAdornment>
+                                ),
                             }}
+                            sx={{ width: '50%', margin: '50px auto 0 auto', display: 'block' }}
                         />
                         <StyleTable>
 

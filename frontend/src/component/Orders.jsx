@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Table, TableHead, TableRow, TableCell, TableBody, Button } from '@mui/material'
-import Tooltip from '@material-ui/core/Tooltip';
+import { Table, TableHead, TableRow, TableCell, TableBody, Button, Tooltip } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete';
 
-import { getCustomers, changeStatus, deleteCustomer } from '../services/api.js'
+import { getOrders, changeOrderStatus, deleteOrder } from '../services/api.js'
 import styled from 'styled-components';
 import './list.css';
 

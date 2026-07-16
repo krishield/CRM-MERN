@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Table, TableHead, TableRow, TableCell, TableBody, Button } from '@mui/material';
-import Tooltip from '@material-ui/core/Tooltip';
+import { Table, TableHead, TableRow, TableCell, TableBody, Button, Tooltip } from '@mui/material';
 import { getCustomers, changeStatus } from '../services/api.js';
 // import {deleteCustomer} from '../services/api.js';
 // import { Link, useNavigate } from "react-router-dom";

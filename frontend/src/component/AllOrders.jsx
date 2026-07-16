@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Table, TableHead, TableRow, TableCell, TableBody, Button } from '@mui/material'
-import Chip from '@material-ui/core/Chip';
-import Paper from '@material-ui/core/Paper';
-import SearchBar from 'material-ui-search-bar';
+import { Table, TableHead, TableRow, TableCell, TableBody, Button, Chip, Paper, TextField, InputAdornment } from '@mui/material'
+import SearchIcon from '@mui/icons-material/Search';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getCustomers, deleteCustomer } from '../services/api.js';
+import { getOrders, deleteOrder } from '../services/api.js';
 import { Link } from "react-router-dom";
 import styled from 'styled-components';
 
@@ -80,27 +78,22 @@ const AllOrders = () => {
     }, []);
 
     const getAllCustomers = async () => {
-        let response = await getCustomers();
-        const allorders = response.data.filter(e => e.status === 'Pending-Order' || e.status === 'Complete-Order');
-        setOrder(allorders);
-        setOriginalCustomers(allorders);
+        let response = await getOrders();
+        setOrder(response.data);
+        setOriginalCustomers(response.data);
     }
 
     const deleteCustomerDetails = async (id) => {
-        await deleteCustomer(id);
+        await deleteOrder(id);
         getAllCustomers();
     }
 
     const requestSearch = (searchedVal) => {
+        setSearched(searchedVal);
         const filteredCustomers = originalCustomers.filter((order) => {
             return order.name.toLowerCase().includes(searchedVal.toLowerCase());
         });
         setOrder(filteredCustomers);
-    };
-
-    const cancelSearch = () => {
-        setOrder(originalCustomers);
-        setSearched("");
     };
 
     return (
@@ -108,18 +101,19 @@ const AllOrders = () => {
             {isLoading ? <div>Loading...</div> : (
                 <div>
                     <Paper>
-                        <SearchBar
+                        <TextField
                             value={searched}
-                            onChange={(searchval) => requestSearch(searchval)}
-                            onCancelSearch={() => cancelSearch()}
-                            style={{
-                                height: '50px',
-                                fontSize: '17px',
-                                width: '50%',
-                                margin: '50px auto 0 auto',
-                                backgroundColor: '#9ff5ec', // set the background color here
-                                color: 'black' // set the text color here
+                            onChange={(e) => requestSearch(e.target.value)}
+                            placeholder="Search"
+                            variant="outlined"
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <SearchIcon />
+                                    </InputAdornment>
+                                ),
                             }}
+                            sx={{ width: '50%', margin: '50px auto 0 auto', display: 'block' }}
                         />
                         <StyleTable>
 
@@ -154,8 +148,8 @@ const AllOrders = () => {
                                                     label={order.status}
                                                     style={{
                                                         fontWeight: 'bold',
-                                                        backgroundColor: order.status === 'Pending-Order' ? 'Orange' :
-                                                            order.status === 'Complete-Order' ? 'green' : 'black',
+                                                        backgroundColor: order.status === 'pending' ? 'Orange' :
+                                                            order.status === 'complete' ? 'green' : 'black',
 
                                                         borderRadius: 10,
                                                         padding: '1px 5px',

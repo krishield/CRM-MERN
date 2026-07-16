@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { getCustomer } from "../services/api.js";
 import { useNavigate, useParams } from "react-router-dom";
-import Chip from '@material-ui/core/Chip';
+import { Chip } from '@mui/material';
 import styled from 'styled-components';
 
 const Container = styled.div`

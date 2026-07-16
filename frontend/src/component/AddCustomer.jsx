@@ -1,9 +1,8 @@
 
-import { FormControl, FormGroup, InputLabel, Input, Typography, styled, Button, Select, MenuItem } from "@mui/material";
+import { FormControl, FormGroup, InputLabel, Input, Typography, styled, Button, Select, MenuItem, Grid, Box } from "@mui/material";
 import { useState, useEffect } from "react";
 import { addCustomer, addOrder } from "../services/api.js";
 import { useNavigate } from "react-router-dom";
-import { Grid, Box } from '@material-ui/core';
 
 const Container = styled(FormGroup)`
     width: 90%;

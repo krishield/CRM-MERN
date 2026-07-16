@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Table, TableHead, TableRow, TableCell, TableBody, Button } from '@mui/material';
-import Tooltip from '@material-ui/core/Tooltip';
+import { Table, TableHead, TableRow, TableCell, TableBody, Button, Tooltip } from '@mui/material';
 import { getCustomers, changeStatus } from '../services/api.js';
 import styled from 'styled-components';
 

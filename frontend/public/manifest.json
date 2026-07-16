@@ -1,25 +1,20 @@
 {
-  "short_name": "CRM",
-  "name": "Create React App Sample",
+  "short_name": "KD CRM",
+  "name": "KD CRM",
   "icons": [
     {
-      "src": "1.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
-    },
-    {
-      "src": "2.png",
+      "src": "logo.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "2.png",
+      "src": "logo.png",
       "type": "image/png",
       "sizes": "512x512"
     }
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#054F81",
   "background_color": "#ffffff"
 }

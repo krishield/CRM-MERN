@@ -1,5 +1,5 @@
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
-import { AppBar, Toolbar, Tabs, Tab, IconButton, Tooltip } from '@mui/material';
+import { AppBar, Toolbar, Tabs, Tab, IconButton, Tooltip, Box } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 const tabs = [
@@ -30,6 +30,13 @@ const NavBar = () => {
   return (
     <AppBar position="static" color="primary">
       <Toolbar sx={{ justifyContent: 'space-between' }}>
+        <Box
+          component={NavLink}
+          to="/"
+          sx={{ display: 'flex', alignItems: 'center', mr: 2, flexShrink: 0 }}
+        >
+          <Box component="img" src={`${process.env.PUBLIC_URL}/logo.png`} alt="KD" sx={{ height: 40, borderRadius: 1 }} />
+        </Box>
         <Tabs
           value={currentTab}
           textColor="inherit"

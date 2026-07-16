@@ -24,6 +24,7 @@ const Login = () => {
   return (
     <div className="login-wrapper">
       <form onSubmit={handleSubmit} className="login-form">
+        <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="KD" style={{ height: 60, borderRadius: 8, marginBottom: 12 }} />
         <h1 className="login-title">Verify</h1>
         {error && <p style={{ color: 'red' }}>{error}</p>}
         <div className="login-input">

@@ -1,19 +1,23 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { login } from '../services/api.js';
 import './Login.css';
 
 const Login = () => {
-  const nevigate = useNavigate();
+  const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    if (username === 'ssc' && password === 'ssc@3106') {
-      // Redirect the user to the home page
-      nevigate('/all');
-    } else {
-      alert('Invalid username or password.');
+    setError('');
+    try {
+      const response = await login(username, password);
+      localStorage.setItem('token', response.data.token);
+      navigate('/all');
+    } catch (err) {
+      setError('Invalid username or password.');
     }
   };
 
@@ -21,6 +25,7 @@ const Login = () => {
     <div className="login-wrapper">
       <form onSubmit={handleSubmit} className="login-form">
         <h1 className="login-title">Verify</h1>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
         <div className="login-input">
           <label htmlFor="username">Username:</label>
           <input type="text" id="username" value={username} onChange={(event) => setUsername(event.target.value)} />

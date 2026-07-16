@@ -12,7 +12,7 @@ const StyleTable = styled(Table)`
 const THead = styled(TableRow)`
     & > th {
         font-size: 18px;
-        background-color: #054F81;
+        background-color: #0B2E4F;
         color: #fff;
         text-align: center;
         font-weight: bold;

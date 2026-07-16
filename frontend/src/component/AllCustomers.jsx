@@ -29,7 +29,7 @@ const THead = styled(TableRow)`
     }
     & > th {
         font-size: 20px;
-        background-color: #054F81;
+        background-color: #0B2E4F;
         color: #fff;
         text-align: center;
         padding: 16px;
@@ -146,11 +146,11 @@ const Allcustomers = () => {
                                                     label={customer.status}
                                                     style={{
                                                         fontWeight: 'bold',
-                                                        backgroundColor: customer.status === 'repaired' ? 'green' :
-                                                            customer.status === 'not-repaired' ? 'red' :
-                                                            customer.status === 'pending' ? 'orange' :
-                                                            customer.status === 'checked' ? 'blue' :
-                                                            customer.status === 'completed' ? 'purple' : 'black',
+                                                        backgroundColor: customer.status === 'repaired' ? '#16A34A' :
+                                                            customer.status === 'not-repaired' ? '#DC2626' :
+                                                            customer.status === 'pending' ? '#D97706' :
+                                                            customer.status === 'checked' ? '#0E9594' :
+                                                            customer.status === 'completed' ? '#0B2E4F' : '#5F5E5A',
                                                         color: 'white',
                                                         borderRadius: 10,
                                                         padding: '1px 5px',

@@ -29,7 +29,7 @@ const THead = styled(TableRow)`
     }
     & > th {
         font-size: 20px;
-        background-color: #054F81;
+        background-color: #0B2E4F;
         color: #fff;
         text-align: center;
         padding: 16px;
@@ -148,8 +148,8 @@ const AllOrders = () => {
                                                     label={order.status}
                                                     style={{
                                                         fontWeight: 'bold',
-                                                        backgroundColor: order.status === 'pending' ? 'Orange' :
-                                                            order.status === 'complete' ? 'green' : 'black',
+                                                        backgroundColor: order.status === 'pending' ? '#D97706' :
+                                                            order.status === 'complete' ? '#16A34A' : '#5F5E5A',
 
                                                         borderRadius: 10,
                                                         padding: '1px 5px',

@@ -6,9 +6,12 @@ import { useNavigate } from "react-router-dom";
 
 const Container = styled(FormGroup)`
     width: 90%;
+    max-width: 1100px;
     margin: 2% auto 0 auto;
-    padding: 20px; /* Added padding for better spacing */
-    background-color: #acfadc; /* Light gray background color */
+    padding: 32px;
+    background-color: #FFFFFF;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(11, 46, 79, 0.12);
 
     & > div {
         margin-top: 20px;
@@ -16,18 +19,14 @@ const Container = styled(FormGroup)`
 `;
 
 const Title = styled(Typography)`
-font-size: 32px;
+font-size: 26px;
 font-weight: bold;
 margin-bottom: 16px;
-color: #333;
+color: #0B2E4F;
 text-transform: uppercase;
-text-align: center;
-letter-spacing: 2px;
-font-family: 'Merriweather', serif;
-border-bottom: 2px solid #6c5ce7;
+letter-spacing: 1px;
+border-bottom: 3px solid #0E9594;
 padding-bottom: 8px;
-  
-
 `;
 
 

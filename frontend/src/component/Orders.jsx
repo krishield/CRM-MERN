@@ -28,7 +28,7 @@ const THead = styled(TableRow)`
     }
     & > th {
         font-size: 20px;
-        background-color:#054F81;
+        background-color:#0B2E4F;
         color: #fff;
         text-align: center;
         padding: 16px;

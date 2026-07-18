@@ -10,7 +10,13 @@ Local customer/repair-order CRM for the shop.
 4. **Double-click `setup.bat`** inside the unzipped folder. It installs everything and asks you to choose a username/password — pick something simple, write it down, it's shown once.
 5. **Double-click `start-app.bat`** to run the app. It opens at [http://localhost:4000](http://localhost:4000) in your browser.
 
-From then on, just double-click `start-app.bat` whenever you want to use it. Leave that black window open while using the app; closing it stops the app.
+### Everyday use (after the one-time setup above)
+
+Just double-click `start-app.bat`. That's it — MongoDB runs automatically in the background (it's a Windows Service, starts on its own when the PC boots), so `start-app.bat` only starts the app itself. No setup, no database work, nothing to configure again.
+
+Leave the black window open while using the app; closing it stops the app. Your customer data is saved on the PC and is not affected by starting, stopping, or restarting the app or the computer.
+
+Only re-run `setup.bat` if you deleted `server/.env` or want to change the login password.
 
 ## Mac / Linux setup (for development)
 

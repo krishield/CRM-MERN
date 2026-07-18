@@ -6,7 +6,12 @@ Local customer/repair-order CRM for the shop.
 
 1. **Install Node.js** — download from [nodejs.org](https://nodejs.org/) (the "LTS" button), run the installer, keep clicking Next.
 2. **Install MongoDB** — download "MongoDB Community Server" from [mongodb.com/try/download/community](https://www.mongodb.com/try/download/community), run the installer, keep "Install MongoDB as a Service" checked (it's the default) so it starts automatically.
-3. **Download this project** — on the GitHub page, green "Code" button → "Download ZIP" → unzip it somewhere (e.g. Desktop).
+3. **Get this project.** Two options:
+   - **Recommended (supports one-click updates later):** install [Git for Windows](https://git-scm.com/download/win) (keep defaults during install), then open Command Prompt, `cd` to where you want it (e.g. `cd Desktop`), and run:
+     ```
+     git clone https://github.com/krishield/CRM-MERN.git
+     ```
+   - **Simpler, but no easy updates:** on the GitHub page, green "Code" button → "Download ZIP" → unzip it somewhere (e.g. Desktop).
 4. **Double-click `setup.bat`** inside the unzipped folder. It installs everything and asks you to choose a username/password — pick something simple, write it down, it's shown once.
 5. **Double-click `start-app.bat`** to run the app. It opens at [http://localhost:4000](http://localhost:4000) in your browser.
 
@@ -17,6 +22,12 @@ Just double-click `start-app.bat`. That's it — MongoDB runs automatically in t
 Leave the black window open while using the app; closing it stops the app. Your customer data is saved on the PC and is not affected by starting, stopping, or restarting the app or the computer.
 
 Only re-run `setup.bat` if you deleted `server/.env` or want to change the login password.
+
+### Getting updates
+
+If you cloned with `git` (see step 3 above), double-click `update.bat` any time to fetch and install the latest version — it runs `git pull` and reinstalls anything that changed, without touching your data or login. Then start the app as usual.
+
+If you used the ZIP download instead, `update.bat` won't work — download a fresh ZIP and copy the files over (not `.env`, not `node_modules`) instead.
 
 ## Mac / Linux setup (for development)
 

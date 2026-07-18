@@ -64,3 +64,16 @@ export const changeStatus = async (request, response) => {
         response.status(404).json({ message: error.message })
     }
 }
+
+export const markDelivered = async (request, response) => {
+    try {
+        const customer = await Customer.findByIdAndUpdate(
+            request.params.id,
+            { delivered: true, time2: request.body.time2 },
+            { new: true }
+        );
+        response.status(200).json(customer);
+    } catch (error) {
+        response.status(404).json({ message: error.message })
+    }
+}

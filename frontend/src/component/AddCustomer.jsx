@@ -79,7 +79,7 @@ const AddCustomer = () => {
         customer.date = currentDate;
         console.log(customer);
         await addCustomer(customer);
-        nevigate('/pending')
+        nevigate('/board')
     }
 
     const addOrderDetails = async () => {

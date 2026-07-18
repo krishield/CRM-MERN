@@ -52,6 +52,14 @@ export const changeStatus = async (id, newStatus, timeofdelivery) => {
     }
 }
 
+export const markDelivered = async (id, timeofdelivery) => {
+    try {
+        return await apiClient.patch(`/${id}/deliver`, { time2: timeofdelivery });
+    } catch (error) {
+        console.log("error while calling mark delivered API", error);
+    }
+}
+
 export const addOrder = async (data) => {
     try {
         return await apiClient.post('/addOrder', data)

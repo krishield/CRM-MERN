@@ -17,6 +17,7 @@ const customerSchema = mongoose.Schema({
         default: 'pending',
     },
     time2: String,
+    delivered: { type: Boolean, default: false },
 }, { timestamps: true });
 
 const Customer = mongoose.model('customer', customerSchema);

@@ -1,6 +1,6 @@
 import express from "express";
 import authMiddleware from '../middleware/auth-middleware.js';
-import { addCustomer, getCustomers, getCustomer, editCustomer, deleteCustomer, changeStatus } from '../controllers/customer-controller.js';
+import { addCustomer, getCustomers, getCustomer, editCustomer, deleteCustomer, changeStatus, markDelivered } from '../controllers/customer-controller.js';
 
 const router = express.Router();
 
@@ -12,5 +12,6 @@ router.get('/:id', getCustomer);
 router.put('/:id', editCustomer);
 router.delete('/:id', deleteCustomer);
 router.patch('/:id/status', changeStatus);
+router.patch('/:id/deliver', markDelivered);
 
 export default router;

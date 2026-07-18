@@ -4,9 +4,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 
 const tabs = [
   { label: 'Add Customer', to: '/' },
-  { label: 'Pending', to: '/pending' },
-  { label: 'Checked', to: '/checked' },
-  { label: 'Completed', to: '/completed' },
+  { label: 'Board', to: '/board' },
   { label: 'All Customers', to: '/all' },
   { label: 'Orders', to: '/orders' },
   { label: 'All Orders', to: '/Allorders' },

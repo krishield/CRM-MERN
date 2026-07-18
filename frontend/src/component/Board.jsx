@@ -67,7 +67,11 @@ const Board = () => {
                                         {c.customerId} &middot; {c.device} &middot; {c.brand}
                                     </Typography>
                                     <Typography variant="body2" sx={{ color: '#5F5E5A', fontWeight: 'bold' }}>{c.name} &nbsp; {c.mobile}</Typography>
-                                    <Typography variant="body2" sx={{ color: '#5F5E5A', mb: 0.75 }}>{c.problem}</Typography>
+                                    <Box sx={{ backgroundColor: '#F4F6F9', borderRadius: 1, p: 0.75, mb: 0.75 }}>
+                                        <Typography variant="body2" sx={{ color: '#2C2C2A', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+                                            {c.problem}
+                                        </Typography>
+                                    </Box>
                                     {c.cost && (
                                         <Chip
                                             size="small"

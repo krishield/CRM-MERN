@@ -63,9 +63,15 @@ const Board = () => {
                             )}
                             {cards.map(c => (
                                 <Paper key={c._id} sx={{ p: 1.5, borderRadius: 2, borderLeft: `4px solid ${col.color}` }}>
-                                    <Typography sx={{ fontWeight: 'bold' }}>{c.customerId} &middot; {c.name}</Typography>
-                                    <Typography variant="body2" sx={{ color: '#5F5E5A' }}>{c.device} &middot; {c.problem}</Typography>
-                                    <Typography variant="body2" sx={{ color: '#5F5E5A', mb: 1 }}>{c.mobile}</Typography>
+                                    <Typography sx={{ fontWeight: 'bold', color: '#0B2E4F' }}>{c.customerId} &middot; {c.name}</Typography>
+                                    <Typography sx={{ fontWeight: 'bold', color: '#185FA5' }}>{c.device} &middot; {c.brand}</Typography>
+                                    <Typography variant="body2" sx={{ color: '#5F5E5A' }}>{c.mobile}</Typography>
+                                    <Typography variant="body2" sx={{ color: '#5F5E5A' }}>{c.problem}</Typography>
+                                    <Typography variant="body2" sx={{ color: '#888780' }}>Cost: {c.cost}</Typography>
+                                    {c.note && (
+                                        <Typography variant="body2" sx={{ color: '#888780', fontStyle: 'italic', mb: 1 }}>{c.note}</Typography>
+                                    )}
+                                    {!c.note && <Box sx={{ mb: 1 }} />}
 
                                     {col.status === 'pending' && (
                                         <Button fullWidth size="small" variant="contained" sx={{ backgroundColor: '#0E9594' }} onClick={() => move(c._id, 'checked')}>

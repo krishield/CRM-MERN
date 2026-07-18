@@ -128,9 +128,12 @@ const Board = () => {
                                     )}
 
                                     {(col.status === 'repaired' || col.status === 'not-repaired') && (
-                                        <Button fullWidth size="small" variant="contained" sx={{ backgroundColor: '#0B2E4F' }} onClick={() => deliver(c._id)}>
-                                            Delivered
-                                        </Button>
+                                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                                            <Button fullWidth size="small" variant="contained" sx={{ backgroundColor: '#0B2E4F' }} onClick={() => deliver(c._id)}>
+                                                Delivered
+                                            </Button>
+                                            <Button size="small" variant="outlined" onClick={() => move(c._id, 'completed')}>Back to completed</Button>
+                                        </Box>
                                     )}
 
                                     <Button component={Link} to={`/edit/${c._id}`} size="small" sx={{ mt: 1, fontSize: 12 }}>

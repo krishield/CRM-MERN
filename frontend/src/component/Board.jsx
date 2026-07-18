@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Box, Paper, Typography, Button, Chip } from '@mui/material';
+import { Box, Paper, Typography, Button, Chip, TextField } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { getCustomers, changeStatus, markDelivered } from '../services/api.js';
+import { getCustomers, changeStatus, markDelivered, editCustomer } from '../services/api.js';
 
 const columns = [
     { status: 'pending', label: 'Pending', color: '#D97706' },
@@ -43,6 +43,13 @@ const Board = () => {
         loadBoard();
     }
 
+    const saveNote = async (customer, note) => {
+        if (note === (customer.note || '')) return;
+        const { _id, __v, createdAt, updatedAt, ...rest } = customer;
+        await editCustomer({ ...rest, note }, _id);
+        loadBoard();
+    }
+
     return (
         <Box sx={{ display: 'flex', gap: 2, p: 3, overflowX: 'auto' }}>
             {columns.map(col => {
@@ -79,10 +86,17 @@ const Board = () => {
                                             sx={{ backgroundColor: '#E1F5EE', color: '#085041', fontWeight: 'bold', mb: 0.75 }}
                                         />
                                     )}
-                                    {c.note && (
-                                        <Typography variant="body2" sx={{ color: '#888780', fontStyle: 'italic', mb: 1 }}>{c.note}</Typography>
-                                    )}
-                                    {!c.note && <Box sx={{ mb: 1 }} />}
+                                    <TextField
+                                        defaultValue={c.note || ''}
+                                        key={`${c._id}-${c.note || ''}`}
+                                        onBlur={(e) => saveNote(c, e.target.value)}
+                                        placeholder="Add a note..."
+                                        variant="standard"
+                                        multiline
+                                        fullWidth
+                                        size="small"
+                                        sx={{ mb: 1, '& .MuiInputBase-input': { fontSize: 13, fontStyle: 'italic', color: '#5F5E5A' } }}
+                                    />
 
                                     {col.status === 'pending' && (
                                         <Button fullWidth size="small" variant="contained" sx={{ backgroundColor: '#0E9594' }} onClick={() => move(c._id, 'checked')}>

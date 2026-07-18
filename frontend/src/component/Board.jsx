@@ -63,11 +63,18 @@ const Board = () => {
                             )}
                             {cards.map(c => (
                                 <Paper key={c._id} sx={{ p: 1.5, borderRadius: 2, borderLeft: `4px solid ${col.color}` }}>
-                                    <Typography sx={{ fontWeight: 'bold', color: '#0B2E4F' }}>{c.customerId} &middot; {c.name}</Typography>
-                                    <Typography sx={{ fontWeight: 'bold', color: '#185FA5' }}>{c.device} &middot; {c.brand}</Typography>
-                                    <Typography variant="body2" sx={{ color: '#5F5E5A' }}>{c.mobile}</Typography>
-                                    <Typography variant="body2" sx={{ color: '#5F5E5A' }}>{c.problem}</Typography>
-                                    <Typography variant="body2" sx={{ color: '#888780' }}>Cost: {c.cost}</Typography>
+                                    <Typography sx={{ fontWeight: 'bold', color: '#0B2E4F' }}>
+                                        {c.customerId} &middot; {c.device} &middot; {c.brand}
+                                    </Typography>
+                                    <Typography variant="body2" sx={{ color: '#5F5E5A' }}>{c.name} &nbsp; {c.mobile}</Typography>
+                                    <Typography variant="body2" sx={{ color: '#5F5E5A', mb: 0.75 }}>{c.problem}</Typography>
+                                    {c.cost && (
+                                        <Chip
+                                            size="small"
+                                            label={`₹${c.cost}`}
+                                            sx={{ backgroundColor: '#E1F5EE', color: '#085041', fontWeight: 'bold', mb: 0.75 }}
+                                        />
+                                    )}
                                     {c.note && (
                                         <Typography variant="body2" sx={{ color: '#888780', fontStyle: 'italic', mb: 1 }}>{c.note}</Typography>
                                     )}

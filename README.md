@@ -1,65 +1,57 @@
 # KD CRM
 
-Local customer/repair-order CRM for the shop. React frontend + Express/MongoDB backend.
+Local customer/repair-order CRM for the shop.
 
-## Prerequisites
+## Windows install (for the shop PC)
 
-- [Node.js](https://nodejs.org/) (v18+)
-- [MongoDB Community](https://www.mongodb.com/try/download/community) running locally
-  - macOS: `brew tap mongodb/brew && brew install mongodb-community && brew services start mongodb-community`
+1. **Install Node.js** — download from [nodejs.org](https://nodejs.org/) (the "LTS" button), run the installer, keep clicking Next.
+2. **Install MongoDB** — download "MongoDB Community Server" from [mongodb.com/try/download/community](https://www.mongodb.com/try/download/community), run the installer, keep "Install MongoDB as a Service" checked (it's the default) so it starts automatically.
+3. **Download this project** — on the GitHub page, green "Code" button → "Download ZIP" → unzip it somewhere (e.g. Desktop).
+4. **Double-click `setup.bat`** inside the unzipped folder. It installs everything and asks you to choose a username/password — pick something simple, write it down, it's shown once.
+5. **Double-click `start-app.bat`** to run the app. It opens at [http://localhost:4000](http://localhost:4000) in your browser.
 
-## Setup on a new machine
+From then on, just double-click `start-app.bat` whenever you want to use it. Leave that black window open while using the app; closing it stops the app.
 
-1. Clone the repo and install dependencies:
-   ```bash
-   git clone https://github.com/krishield/CRM-MERN.git
-   cd CRM-MERN
-   npm install
-   cd server && npm install && cd ..
-   cd frontend && npm install && cd ..
-   ```
+## Mac / Linux setup (for development)
 
-2. Create `server/.env` (copy `server/.env.example` and fill in real values):
-   ```
-   MONGO_URI=mongodb://localhost:27017/crm
-   JWT_SECRET=<a long random string>
-   ADMIN_USER=<login username>
-   ADMIN_PASS_HASH=<bcrypt hash, generate with the command below>
-   ```
-   Generate the password hash:
-   ```bash
-   cd server && node scripts/generate-password-hash.js 'your-password' && cd ..
-   ```
-   Paste the printed hash into `ADMIN_PASS_HASH`.
+```bash
+git clone https://github.com/krishield/CRM-MERN.git
+cd CRM-MERN
+npm install
+cd server && npm install && cd ..
+cd frontend && npm install && cd ..
+```
 
-3. (Optional) Frontend runs on port 4000 by default via `frontend/.env` (`PORT=4000`). Change it there if needed.
+Install MongoDB (macOS):
+```bash
+brew tap mongodb/brew && brew install mongodb-community && brew services start mongodb-community
+```
 
-4. Start MongoDB if it isn't already running:
-   ```bash
-   brew services start mongodb-community
-   ```
+Create `server/.env` (copy `server/.env.example`, fill in real values):
+```
+MONGO_URI=mongodb://localhost:27017/crm
+JWT_SECRET=<a long random string>
+ADMIN_USER=<login username>
+ADMIN_PASS_HASH=<bcrypt hash, generate below>
+```
+```bash
+cd server && node scripts/generate-password-hash.js 'your-password' && cd ..
+```
+Paste the printed hash into `ADMIN_PASS_HASH`.
 
-## Running
+Create `frontend/.env`:
+```
+PORT=4000
+```
 
-From the repo root:
+Run:
 ```bash
 npm start
 ```
-This runs backend (`http://localhost:8000`) and frontend (`http://localhost:4000`) together.
-
-Or run them separately:
-```bash
-npm run server     # backend only, port 8000
-npm run frontend    # frontend only, port 4000
-```
-
-On Windows, double-click `start-app.bat` (runs `npm start` from the repo root).
-
-## Login
-
-Use the username/password set up in `server/.env` during setup (step 2).
+Backend on `http://localhost:8000`, frontend on `http://localhost:4000`.
 
 ## Notes
 
-- Customer IDs are sequential (`KD001`, `KD002`, ...), assigned automatically on add.
-- `server/.env` and `frontend/.env` are gitignored — each machine needs its own copy (steps 2-3 above).
+- Customer IDs are sequential (`KD001`, `KD002`, ...), assigned automatically.
+- `server/.env` and `frontend/.env` are gitignored — each machine needs its own (created by `setup.bat` on Windows, or manually on Mac/Linux, see above).
+- Forgot the password? Delete `server/.env` and run `setup.bat` again (Windows) or repeat the manual steps (Mac/Linux) to set a new one.

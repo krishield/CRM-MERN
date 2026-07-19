@@ -9,7 +9,7 @@ import { getCurrentUser } from '../utils/auth.js';
 const pageInfo = {
     '/dashboard': { title: 'Dashboard', subtitle: 'Ongoing repairs at a glance' },
     '/all': { title: 'Customers', subtitle: 'All customer records' },
-    '/Allorders': { title: 'Orders', subtitle: 'All customer orders' },
+    '/Allorders': { title: 'All orders', subtitle: 'All customer orders' },
     '/orders': { title: 'Orders', subtitle: 'Orders awaiting completion' },
     '/add': { title: 'Add new entry', subtitle: 'Add new customer and order details' },
     '/settings': { title: 'Settings', subtitle: 'Customize your CRM' },

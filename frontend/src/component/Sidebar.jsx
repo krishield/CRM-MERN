@@ -33,9 +33,13 @@ const Sidebar = ({ mobileOpen, onClose }) => {
     const { unlocked, openDialog, lock } = useOwnerLock();
     const isMobile = useMediaQuery('(max-width:900px)');
 
-    const mainItems = [
+    const unlockedItems = [
         { label: 'Dashboard', to: '/dashboard', icon: <SpaceDashboardIcon /> },
-        ...(settings.ordersEnabled !== false ? [{ label: 'Orders', to: '/Allorders', icon: <ShoppingBagIcon /> }] : []),
+        ...(settings.ordersEnabled !== false ? [{ label: 'Orders', to: '/orders', icon: <ShoppingBagIcon /> }] : []),
+    ];
+
+    const adminItems = [
+        ...(settings.ordersEnabled !== false ? [{ label: 'Orders (all orders)', to: '/Allorders', icon: <ShoppingBagIcon /> }] : []),
         { label: 'Customers', to: '/all', icon: <PeopleAltIcon /> },
         { label: 'Revenue', to: '/revenue', icon: <PaidIcon /> },
     ];
@@ -93,8 +97,8 @@ const Sidebar = ({ mobileOpen, onClose }) => {
 
             <Box sx={{ height: 16 }} />
 
-            <List sx={{ px: 1.5, flex: 1 }}>
-                {mainItems.map(item => (
+            <List sx={{ px: 1.5 }}>
+                {unlockedItems.map(item => (
                     <ListItemButton key={item.to} component={NavLink} to={item.to} onClick={handleNavClick} sx={navSx}>
                         <ListItemIcon sx={{ color: 'inherit', minWidth: 36 }}>{item.icon}</ListItemIcon>
                         <ListItemText primary={item.label} />
@@ -102,19 +106,29 @@ const Sidebar = ({ mobileOpen, onClose }) => {
                 ))}
             </List>
 
-            <List sx={{ px: 1.5 }}>
-                <ListItemButton component={NavLink} to="/settings" onClick={handleNavClick} sx={navSx}>
-                    <ListItemIcon sx={{ color: 'inherit', minWidth: 36 }}><SettingsIcon /></ListItemIcon>
-                    <ListItemText primary="Settings" />
-                </ListItemButton>
-            </List>
+            <Box sx={{ height: 16 }} />
 
-            <List sx={{ px: 1.5 }}>
+            <List sx={{ px: 1.5, flex: 1 }}>
                 <ListItemButton onClick={handleAdminClick} sx={navSx}>
                     <ListItemIcon sx={{ color: 'inherit', minWidth: 36 }}>
                         {unlocked ? <LockOpenIcon /> : <LockIcon />}
                     </ListItemIcon>
                     <ListItemText primary={unlocked ? 'Admin (unlocked)' : 'Admin'} />
+                </ListItemButton>
+                <Box sx={{ pl: 2 }}>
+                    {adminItems.map(item => (
+                        <ListItemButton key={item.to} component={NavLink} to={item.to} onClick={handleNavClick} sx={{ ...navSx, py: 0.5 }}>
+                            <ListItemIcon sx={{ color: 'inherit', minWidth: 32 }}>{item.icon}</ListItemIcon>
+                            <ListItemText primary={item.label} primaryTypographyProps={{ fontSize: 14 }} />
+                        </ListItemButton>
+                    ))}
+                </Box>
+            </List>
+
+            <List sx={{ px: 1.5 }}>
+                <ListItemButton component={NavLink} to="/settings" onClick={handleNavClick} sx={navSx}>
+                    <ListItemIcon sx={{ color: 'inherit', minWidth: 36 }}><SettingsIcon /></ListItemIcon>
+                    <ListItemText primary="Settings" />
                 </ListItemButton>
             </List>
 

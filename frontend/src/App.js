@@ -27,7 +27,7 @@ function App() {
           <Route path='/all' element={<PrivateRoute><LockedPage><AllCustomers /></LockedPage></PrivateRoute>} />
           <Route path='/edit/:id' element={<PrivateRoute><EditCustomer /></PrivateRoute>} />
           <Route path='/info/:id' element={<PrivateRoute><Details /></PrivateRoute>} />
-          <Route path='/Allorders' element={<PrivateRoute><AllOrders /></PrivateRoute>} />
+          <Route path='/Allorders' element={<PrivateRoute><LockedPage><AllOrders /></LockedPage></PrivateRoute>} />
           <Route path='/orders' element={<PrivateRoute><Orders /></PrivateRoute>} />
           <Route path='/settings' element={<PrivateRoute><SettingsPage /></PrivateRoute>} />
           <Route path='/revenue' element={<PrivateRoute><LockedPage><Revenue /></LockedPage></PrivateRoute>} />

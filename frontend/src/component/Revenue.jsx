@@ -1,6 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Box, Paper, Typography, Tabs, Tab, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
+import { Box, Paper, Typography, Tabs, Tab, Table, TableHead, TableRow, TableCell, TableBody, Button } from '@mui/material';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { getCustomers } from '../services/api.js';
+
+const MASK = '••••••';
 
 const parseCost = (cost) => {
     const n = parseFloat(String(cost).replace(/[^0-9.]/g, ''));
@@ -21,6 +25,7 @@ const StatCard = ({ label, value, color }) => (
 const Revenue = () => {
     const [customers, setCustomers] = useState([]);
     const [view, setView] = useState('monthly');
+    const [visible, setVisible] = useState(false);
 
     useEffect(() => {
         const load = async () => {
@@ -77,11 +82,22 @@ const Revenue = () => {
 
     return (
         <Box sx={{ p: 4 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+                <Button
+                    variant="outlined"
+                    startIcon={visible ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                    onClick={() => setVisible(!visible)}
+                    sx={{ borderColor: '#0B2E4F', color: '#0B2E4F' }}
+                >
+                    {visible ? 'Hide values' : 'Show values'}
+                </Button>
+            </Box>
+
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 3 }}>
-                <StatCard label="This month" value={rupee(totals.month)} color="#0E9594" />
-                <StatCard label="This quarter" value={rupee(totals.quarter)} color="#0B2E4F" />
-                <StatCard label="This year" value={rupee(totals.year)} color="#16A34A" />
-                <StatCard label="All time" value={rupee(totals.allTime)} color="#185FA5" />
+                <StatCard label="This month" value={visible ? rupee(totals.month) : MASK} color="#0E9594" />
+                <StatCard label="This quarter" value={visible ? rupee(totals.quarter) : MASK} color="#0B2E4F" />
+                <StatCard label="This year" value={visible ? rupee(totals.year) : MASK} color="#16A34A" />
+                <StatCard label="All time" value={visible ? rupee(totals.allTime) : MASK} color="#185FA5" />
             </Box>
 
             <Paper sx={{ borderRadius: 3, overflow: 'hidden' }}>
@@ -103,7 +119,7 @@ const Revenue = () => {
                             <TableRow key={b.sortKey} sx={{ '&:hover': { backgroundColor: '#F4F6F9' } }}>
                                 <TableCell>{b.label}</TableCell>
                                 <TableCell>{b.count}</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold', color: '#16A34A' }}>{rupee(b.amount)}</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold', color: '#16A34A' }}>{visible ? rupee(b.amount) : MASK}</TableCell>
                             </TableRow>
                         ))}
                         {breakdown.length === 0 && (

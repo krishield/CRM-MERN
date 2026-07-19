@@ -4,6 +4,7 @@ import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import PaidIcon from '@mui/icons-material/Paid';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useSettings } from '../context/SettingsContext.jsx';
@@ -16,6 +17,7 @@ const mainItems = [
     { label: 'Dashboard', to: '/dashboard', icon: <SpaceDashboardIcon /> },
     { label: 'Orders', to: '/Allorders', icon: <ShoppingBagIcon /> },
     { label: 'Customers', to: '/all', icon: <PeopleAltIcon /> },
+    { label: 'Revenue', to: '/revenue', icon: <PaidIcon /> },
 ];
 
 const navSx = {

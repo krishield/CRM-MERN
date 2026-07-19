@@ -9,6 +9,7 @@ import LoginForm from './component/Login.jsx'
 import AllOrders from './component/AllOrders.jsx';
 import Orders from './component/Orders.jsx';
 import SettingsPage from './component/Settings.jsx';
+import Revenue from './component/Revenue.jsx';
 import PrivateRoute from './component/PrivateRoute.jsx';
 
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
@@ -28,6 +29,7 @@ function App() {
           <Route path='/Allorders' element={<PrivateRoute><AllOrders /></PrivateRoute>} />
           <Route path='/orders' element={<PrivateRoute><Orders /></PrivateRoute>} />
           <Route path='/settings' element={<PrivateRoute><SettingsPage /></PrivateRoute>} />
+          <Route path='/revenue' element={<PrivateRoute><Revenue /></PrivateRoute>} />
         </Routes>
       </BrowserRouter>
     </div>

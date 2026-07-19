@@ -12,6 +12,7 @@ const pageInfo = {
     '/orders': { title: 'Orders', subtitle: 'Orders awaiting completion' },
     '/add': { title: 'Add new entry', subtitle: 'Add new customer and order details' },
     '/settings': { title: 'Settings', subtitle: 'Customize your CRM' },
+    '/revenue': { title: 'Revenue', subtitle: 'Earnings from repaired and delivered devices' },
 };
 
 const initials = (name) => {

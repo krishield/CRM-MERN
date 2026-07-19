@@ -65,9 +65,9 @@ const AllOrders = () => {
     }, [orders, searched, statusFilter]);
 
     return (
-        <Box sx={{ p: 4 }}>
+        <Box sx={{ p: { xs: 2, sm: 4 } }}>
             <Paper sx={{ borderRadius: 3, overflow: 'hidden' }}>
-                <Box sx={{ display: 'flex', gap: 2, p: 2.5, borderBottom: '1px solid #E5E7EB' }}>
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, p: 2.5, borderBottom: '1px solid #E5E7EB' }}>
                     <TextField
                         value={searched}
                         onChange={(e) => setSearched(e.target.value)}
@@ -95,6 +95,7 @@ const AllOrders = () => {
                     </Select>
                 </Box>
 
+                <Box sx={{ overflowX: 'auto' }}>
                 <Table>
                     <TableHead>
                         <THead>
@@ -147,6 +148,7 @@ const AllOrders = () => {
                         )}
                     </TableBody>
                 </Table>
+                </Box>
             </Paper>
         </Box>
     );

@@ -51,7 +51,7 @@ const Board = () => {
     }
 
     return (
-        <Box sx={{ display: 'flex', gap: 2, p: 3, overflowX: 'auto' }}>
+        <Box sx={{ display: 'flex', gap: 2, p: { xs: 1.5, sm: 3 }, overflowX: 'auto' }}>
             {columns.map(col => {
                 const cards = customers.filter(c => c.status === col.status);
                 return (

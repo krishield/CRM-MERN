@@ -81,7 +81,7 @@ const Revenue = () => {
     }, [revenueRecords, view]);
 
     return (
-        <Box sx={{ p: 4 }}>
+        <Box sx={{ p: { xs: 2, sm: 4 } }}>
             <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
                 <Button
                     variant="outlined"

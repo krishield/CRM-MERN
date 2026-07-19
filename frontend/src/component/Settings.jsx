@@ -81,7 +81,7 @@ const Settings = () => {
     }
 
     return (
-        <Box sx={{ p: 4, display: 'flex', flexWrap: 'wrap', gap: 3, alignItems: 'flex-start' }}>
+        <Box sx={{ p: { xs: 2, sm: 4 }, display: 'flex', flexWrap: 'wrap', gap: 3, alignItems: 'flex-start' }}>
             <Paper sx={{ p: 3.5, borderRadius: 3, flex: '1 1 420px', maxWidth: 480 }}>
                 <Typography sx={{ fontWeight: 'bold', color: '#0B2E4F', mb: 3 }}>Branding</Typography>
 

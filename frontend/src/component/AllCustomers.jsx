@@ -77,9 +77,9 @@ const AllCustomers = () => {
     }, [customers, searched, statusFilter]);
 
     return (
-        <Box sx={{ p: 4 }}>
+        <Box sx={{ p: { xs: 2, sm: 4 } }}>
             <Paper sx={{ borderRadius: 3, overflow: 'hidden' }}>
-                <Box sx={{ display: 'flex', gap: 2, p: 2.5, borderBottom: '1px solid #E5E7EB' }}>
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, p: 2.5, borderBottom: '1px solid #E5E7EB' }}>
                     <TextField
                         value={searched}
                         onChange={(e) => setSearched(e.target.value)}
@@ -107,6 +107,7 @@ const AllCustomers = () => {
                     </Select>
                 </Box>
 
+                <Box sx={{ overflowX: 'auto' }}>
                 <Table>
                     <TableHead>
                         <THead>
@@ -155,6 +156,7 @@ const AllCustomers = () => {
                         )}
                     </TableBody>
                 </Table>
+                </Box>
             </Paper>
 
             <Dialog open={!!pendingDelete} onClose={() => setPendingDelete(null)}>

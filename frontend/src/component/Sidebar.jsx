@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Box, Typography, List, ListItemButton, ListItemIcon, ListItemText, Divider } from '@mui/material';
+import { Box, Typography, List, ListItemButton, ListItemIcon, ListItemText, Divider, Drawer, useMediaQuery } from '@mui/material';
 import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
@@ -24,9 +24,10 @@ const navSx = {
     '&:hover': { backgroundColor: '#173F63' },
 };
 
-const Sidebar = () => {
+const Sidebar = ({ mobileOpen, onClose }) => {
     const navigate = useNavigate();
     const { settings } = useSettings();
+    const isMobile = useMediaQuery('(max-width:900px)');
 
     const mainItems = [
         { label: 'Dashboard', to: '/dashboard', icon: <SpaceDashboardIcon /> },
@@ -40,7 +41,11 @@ const Sidebar = () => {
         navigate('/login');
     };
 
-    return (
+    const handleNavClick = () => {
+        if (isMobile && onClose) onClose();
+    };
+
+    const content = (
         <Box sx={{
             width: 240,
             flexShrink: 0,
@@ -48,9 +53,7 @@ const Sidebar = () => {
             color: '#fff',
             display: 'flex',
             flexDirection: 'column',
-            height: '100vh',
-            position: 'sticky',
-            top: 0,
+            height: '100%',
         }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, px: 2.5, py: 3 }}>
                 <Box
@@ -67,7 +70,7 @@ const Sidebar = () => {
 
             <List sx={{ px: 1.5 }}>
                 {topItems.map(item => (
-                    <ListItemButton key={item.to} component={NavLink} to={item.to} sx={navSx}>
+                    <ListItemButton key={item.to} component={NavLink} to={item.to} onClick={handleNavClick} sx={navSx}>
                         <ListItemIcon sx={{ color: 'inherit', minWidth: 36 }}>{item.icon}</ListItemIcon>
                         <ListItemText primary={item.label} />
                     </ListItemButton>
@@ -78,7 +81,7 @@ const Sidebar = () => {
 
             <List sx={{ px: 1.5, flex: 1 }}>
                 {mainItems.map(item => (
-                    <ListItemButton key={item.to} component={NavLink} to={item.to} sx={navSx}>
+                    <ListItemButton key={item.to} component={NavLink} to={item.to} onClick={handleNavClick} sx={navSx}>
                         <ListItemIcon sx={{ color: 'inherit', minWidth: 36 }}>{item.icon}</ListItemIcon>
                         <ListItemText primary={item.label} />
                     </ListItemButton>
@@ -86,7 +89,7 @@ const Sidebar = () => {
             </List>
 
             <List sx={{ px: 1.5 }}>
-                <ListItemButton component={NavLink} to="/settings" sx={navSx}>
+                <ListItemButton component={NavLink} to="/settings" onClick={handleNavClick} sx={navSx}>
                     <ListItemIcon sx={{ color: 'inherit', minWidth: 36 }}><SettingsIcon /></ListItemIcon>
                     <ListItemText primary="Settings" />
                 </ListItemButton>
@@ -109,6 +112,26 @@ const Sidebar = () => {
                     <ListItemText primary="Logout" primaryTypographyProps={{ fontSize: 13 }} />
                 </ListItemButton>
             </Box>
+        </Box>
+    );
+
+    if (isMobile) {
+        return (
+            <Drawer
+                variant="temporary"
+                open={mobileOpen}
+                onClose={onClose}
+                ModalProps={{ keepMounted: true }}
+                sx={{ '& .MuiDrawer-paper': { width: 240, boxSizing: 'border-box' } }}
+            >
+                {content}
+            </Drawer>
+        );
+    }
+
+    return (
+        <Box sx={{ position: 'sticky', top: 0, height: '100vh' }}>
+            {content}
         </Box>
     );
 };

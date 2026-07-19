@@ -105,7 +105,7 @@ const AddCustomer = () => {
     const ordersEnabled = settings.ordersEnabled !== false;
 
     return (
-        <Box sx={{ p: 4 }}>
+        <Box sx={{ p: { xs: 2, sm: 4 } }}>
             <Grid container spacing={3}>
                 <Grid item xs={12} md={ordersEnabled ? 6 : 12}>
                     <Paper sx={{ p: 3.5, borderRadius: 3, maxWidth: ordersEnabled ? 'none' : 640 }}>

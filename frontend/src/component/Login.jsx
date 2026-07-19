@@ -17,7 +17,11 @@ const Login = () => {
       localStorage.setItem('token', response.data.token);
       navigate('/all');
     } catch (err) {
-      setError('Invalid username or password.');
+      if (err.response) {
+        setError('Invalid username or password.');
+      } else {
+        setError('Could not reach the server. Check the shop PC is on and you\'re on the same network.');
+      }
     }
   };
 

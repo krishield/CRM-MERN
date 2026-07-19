@@ -35,6 +35,7 @@ const defaultValue = {
 const EditCustomer = () => {
 
     const [customer, setCustomer] = useState(defaultValue);
+    const [costError, setCostError] = useState('');
 
     const nevigate = useNavigate();
 
@@ -50,13 +51,18 @@ const EditCustomer = () => {
     }
 
     const onValueChange = (e) => {
-        console.log(e.target.name, e.target.value)
         setCustomer({ ...customer, [e.target.name]: e.target.value })
-        console.log(customer);
     }
 
     const editCustomerDetails = async () => {
-        await editCustomer(customer, id);
+        const cost = customer.cost;
+        if (cost !== '' && cost !== undefined && cost !== null && (isNaN(cost) || Number(cost) < 0)) {
+            setCostError('Cost must be a number');
+            return;
+        }
+        setCostError('');
+        const payload = { ...customer, cost: cost === '' || cost === undefined || cost === null ? undefined : Number(cost) };
+        await editCustomer(payload, id);
         nevigate('/dashboard');
     }
 
@@ -79,8 +85,10 @@ const EditCustomer = () => {
             <FormControl><InputLabel>Problem</InputLabel>
                 <Input onChange={(e) => onValueChange(e)} name='problem' value={customer.problem} />
             </FormControl>
-            <FormControl><InputLabel>Estimated Cost</InputLabel>
-                <Input onChange={(e) => onValueChange(e)} name='cost' value={customer.cost} />
+            <FormControl error={!!costError}>
+                <InputLabel>Estimated Cost</InputLabel>
+                <Input type="number" inputProps={{ min: 0, step: 'any' }} onChange={(e) => onValueChange(e)} name='cost' value={customer.cost} />
+                {costError && <Typography variant="caption" sx={{ color: '#DC2626', mt: 0.5 }}>{costError}</Typography>}
             </FormControl>
             <FormControl><InputLabel>Note</InputLabel>
                 <Input onChange={(e) => onValueChange(e)} name='note' value={customer.note} />

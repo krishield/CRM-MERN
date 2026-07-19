@@ -39,7 +39,7 @@ export const getCustomer = async (request, response) => {
 export const editCustomer = async (request, response) => {
     const customer = request.body;
     try {
-        const updated = await Customer.findByIdAndUpdate(request.params.id, customer, { new: true });
+        const updated = await Customer.findByIdAndUpdate(request.params.id, customer, { new: true, runValidators: true });
         response.status(200).json(updated);
     } catch (error) {
         response.status(409).json({ message: error.message })

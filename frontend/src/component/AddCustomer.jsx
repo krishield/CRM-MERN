@@ -23,15 +23,15 @@ const defaultValue = {
     name: '--',
     mobile: '--',
     problem: '--',
-    cost: '--',
+    cost: '',
     note: '--',
     date: "--",
     time: "--",
     status: 'pending',
     time2: '',
     productDetails: '--',
-    totalAmount: '--',
-    advanceAmount: '--',
+    totalAmount: '',
+    advanceAmount: '',
 }
 
 const SectionHeader = ({ icon, color, label }) => (
@@ -52,6 +52,8 @@ const SectionHeader = ({ icon, color, label }) => (
 const AddCustomer = () => {
     const [customer, setCustomer] = useState(defaultValue);
     const [order, setOrder] = useState(defaultValue);
+    const [costError, setCostError] = useState('');
+    const [amountError, setAmountError] = useState('');
     const nevigate = useNavigate();
     const { settings } = useSettings();
     const deviceTypes = settings.deviceTypes && settings.deviceTypes.length ? settings.deviceTypes : ['Laptop', 'Desktop', 'Mobile', 'Tablet', 'Printer'];
@@ -61,29 +63,42 @@ const AddCustomer = () => {
         setOrder({ ...order, [e.target.name]: e.target.value })
     }
 
+    const isValidAmount = (value) => value === '' || (!isNaN(value) && Number(value) >= 0);
+
     const addCustomerDetails = async () => {
+        if (!isValidAmount(customer.cost)) {
+            setCostError('Cost must be a number');
+            return;
+        }
+        setCostError('');
         const currentTime = new Date().toLocaleTimeString('en-IN', {
             timeZone: 'Asia/Kolkata', hour12: true, hour: 'numeric', minute: 'numeric'
         });
         const currentDate = new Date().toLocaleString('en-IN', {
             timeZone: 'Asia/Kolkata', day: 'numeric', month: 'long', year: 'numeric'
         });
-        customer.time = currentTime;
-        customer.date = currentDate;
-        await addCustomer(customer);
+        const payload = { ...customer, time: currentTime, date: currentDate };
+        if (payload.cost === '') delete payload.cost; else payload.cost = Number(payload.cost);
+        await addCustomer(payload);
         nevigate('/dashboard')
     }
 
     const addOrderDetails = async () => {
+        if (!isValidAmount(order.totalAmount) || !isValidAmount(order.advanceAmount)) {
+            setAmountError('Amounts must be numbers');
+            return;
+        }
+        setAmountError('');
         const currentTime = new Date().toLocaleTimeString('en-IN', {
             timeZone: 'Asia/Kolkata', hour12: true, hour: 'numeric', minute: 'numeric'
         });
         const currentDate = new Date().toLocaleString('en-IN', {
             timeZone: 'Asia/Kolkata', day: 'numeric', month: 'long', year: 'numeric'
         });
-        order.time = currentTime;
-        order.date = currentDate;
-        await addOrder(order);
+        const payload = { ...order, time: currentTime, date: currentDate };
+        if (payload.totalAmount === '') delete payload.totalAmount; else payload.totalAmount = Number(payload.totalAmount);
+        if (payload.advanceAmount === '') delete payload.advanceAmount; else payload.advanceAmount = Number(payload.advanceAmount);
+        await addOrder(payload);
         nevigate('/orders')
     }
 
@@ -139,8 +154,13 @@ const AddCustomer = () => {
 
                         <Typography variant="body2" sx={{ mb: 0.5, fontWeight: 'bold', color: '#0B2E4F' }}>Estimated cost</Typography>
                         <TextField
-                            fullWidth placeholder="Enter estimated cost" name='cost' onChange={onValueChange}
-                            InputProps={{ startAdornment: <InputAdornment position="start"><CurrencyRupeeIcon sx={{ color: '#888780' }} /></InputAdornment> }}
+                            fullWidth type="number" placeholder="Enter estimated cost" name='cost' value={customer.cost} onChange={onValueChange}
+                            error={!!costError}
+                            helperText={costError}
+                            InputProps={{
+                                startAdornment: <InputAdornment position="start"><CurrencyRupeeIcon sx={{ color: '#888780' }} /></InputAdornment>,
+                                inputProps: { min: 0, step: 'any' },
+                            }}
                             sx={{ mb: 2.5 }}
                         />
 
@@ -188,15 +208,24 @@ const AddCustomer = () => {
 
                         <Typography variant="body2" sx={{ mb: 0.5, fontWeight: 'bold', color: '#0B2E4F' }}>Total amount</Typography>
                         <TextField
-                            fullWidth placeholder="Enter total amount" name='totalAmount' onChange={onValueChange}
-                            InputProps={{ startAdornment: <InputAdornment position="start"><CurrencyRupeeIcon sx={{ color: '#888780' }} /></InputAdornment> }}
+                            fullWidth type="number" placeholder="Enter total amount" name='totalAmount' value={order.totalAmount} onChange={onValueChange}
+                            error={!!amountError}
+                            InputProps={{
+                                startAdornment: <InputAdornment position="start"><CurrencyRupeeIcon sx={{ color: '#888780' }} /></InputAdornment>,
+                                inputProps: { min: 0, step: 'any' },
+                            }}
                             sx={{ mb: 2.5 }}
                         />
 
                         <Typography variant="body2" sx={{ mb: 0.5, fontWeight: 'bold', color: '#0B2E4F' }}>Advance amount</Typography>
                         <TextField
-                            fullWidth placeholder="Enter advance amount" name='advanceAmount' onChange={onValueChange}
-                            InputProps={{ startAdornment: <InputAdornment position="start"><CurrencyRupeeIcon sx={{ color: '#888780' }} /></InputAdornment> }}
+                            fullWidth type="number" placeholder="Enter advance amount" name='advanceAmount' value={order.advanceAmount} onChange={onValueChange}
+                            error={!!amountError}
+                            helperText={amountError}
+                            InputProps={{
+                                startAdornment: <InputAdornment position="start"><CurrencyRupeeIcon sx={{ color: '#888780' }} /></InputAdornment>,
+                                inputProps: { min: 0, step: 'any' },
+                            }}
                             sx={{ mb: 2.5 }}
                         />
 

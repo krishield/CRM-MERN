@@ -30,7 +30,7 @@ const OwnerPinDialog = () => {
                 <DialogTitle>Enter owner PIN</DialogTitle>
                 <DialogContent>
                     <Typography variant="body2" sx={{ color: '#5F5E5A', mb: 2 }}>
-                        Dashboard, Customers, and Revenue are locked. Enter the owner PIN to view them.
+                        Customers and Revenue are locked. Enter the owner PIN to view them.
                     </Typography>
                     <TextField
                         autoFocus

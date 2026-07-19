@@ -22,7 +22,7 @@ function App() {
         <Routes>
           <Route path='/login' element={<LoginForm />} />
           <Route path='/' element={<Navigate to="/dashboard" replace />} />
-          <Route path='/dashboard' element={<PrivateRoute><LockedPage><Board /></LockedPage></PrivateRoute>} />
+          <Route path='/dashboard' element={<PrivateRoute><Board /></PrivateRoute>} />
           <Route path='/add' element={<PrivateRoute><AddCustomer /></PrivateRoute>} />
           <Route path='/all' element={<PrivateRoute><LockedPage><AllCustomers /></LockedPage></PrivateRoute>} />
           <Route path='/edit/:id' element={<PrivateRoute><EditCustomer /></PrivateRoute>} />

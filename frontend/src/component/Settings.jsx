@@ -259,7 +259,7 @@ const Settings = () => {
             <Paper sx={{ p: 3.5, borderRadius: 3, flex: '1 1 320px', maxWidth: 480 }}>
                 <Typography sx={{ fontWeight: 'bold', color: '#0B2E4F', mb: 1 }}>Owner PIN</Typography>
                 <Typography variant="body2" sx={{ color: '#5F5E5A', mb: 3 }}>
-                    Locks Dashboard, Customers, and Revenue behind a separate PIN, even when logged in.
+                    Locks Customers and Revenue behind a separate PIN, even when logged in.
                 </Typography>
 
                 {settings.ownerPinSet && (

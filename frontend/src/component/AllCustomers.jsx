@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
     Table, TableHead, TableRow, TableCell, TableBody, Button, Chip, Paper,
-    TextField, InputAdornment, Select, MenuItem, Box
+    TextField, InputAdornment, Select, MenuItem, Box,
+    Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions
 } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -46,6 +47,7 @@ const AllCustomers = () => {
     const [customers, setCustomers] = useState([]);
     const [searched, setSearched] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
+    const [pendingDelete, setPendingDelete] = useState(null);
 
     useEffect(() => {
         loadCustomers();
@@ -56,8 +58,9 @@ const AllCustomers = () => {
         setCustomers(response.data);
     }
 
-    const deleteCustomerDetails = async (id) => {
-        await deleteCustomer(id);
+    const confirmDelete = async () => {
+        await deleteCustomer(pendingDelete._id);
+        setPendingDelete(null);
         loadCustomers();
     }
 
@@ -139,7 +142,7 @@ const AllCustomers = () => {
                                 <TableCell>
                                     <Button size="small" variant='contained' style={{ marginRight: 8 }} color="info" component={Link} to={`/info/${customer._id}`}>Details</Button>
                                     <Button size="small" variant='contained' style={{ marginRight: 8 }} color="secondary" component={Link} to={`/edit/${customer._id}`}>Edit</Button>
-                                    <Button size="small"><DeleteIcon color='error' onClick={() => deleteCustomerDetails(customer._id)} /></Button>
+                                    <Button size="small"><DeleteIcon color='error' onClick={() => setPendingDelete(customer)} /></Button>
                                 </TableCell>
                             </TBody>
                         ))}
@@ -153,6 +156,19 @@ const AllCustomers = () => {
                     </TableBody>
                 </Table>
             </Paper>
+
+            <Dialog open={!!pendingDelete} onClose={() => setPendingDelete(null)}>
+                <DialogTitle>Delete customer?</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        This will permanently delete {pendingDelete?.customerId} &middot; {pendingDelete?.name}. This can't be undone.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setPendingDelete(null)}>Cancel</Button>
+                    <Button color="error" variant="contained" onClick={confirmDelete}>Delete</Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 }

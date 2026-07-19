@@ -11,6 +11,7 @@ const pageInfo = {
     '/Allorders': { title: 'Orders', subtitle: 'All customer orders' },
     '/orders': { title: 'Orders', subtitle: 'Orders awaiting completion' },
     '/add': { title: 'Add new entry', subtitle: 'Add new customer and order details' },
+    '/settings': { title: 'Settings', subtitle: 'Customize your CRM' },
 };
 
 const initials = (name) => {

@@ -91,3 +91,19 @@ export const deleteOrder = async (id) => {
         console.log("error while calling delete order API", error);
     }
 }
+
+export const getSettings = async () => {
+    try {
+        return await apiClient.get('/settings');
+    } catch (error) {
+        console.log("error while calling get settings API", error);
+    }
+}
+
+export const updateSettings = async (data) => {
+    try {
+        return await apiClient.put('/settings', data);
+    } catch (error) {
+        console.log("error while calling update settings API", error);
+    }
+}

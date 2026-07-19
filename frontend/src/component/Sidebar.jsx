@@ -95,7 +95,7 @@ const Sidebar = ({ mobileOpen, onClose }) => {
                 ))}
             </List>
 
-            <Box sx={{ height: 16 }} />
+            <Divider sx={{ borderColor: '#173F63', mx: 1.5, my: 1 }} />
 
             <List sx={{ px: 1.5 }}>
                 {unlockedItems.map(item => (
@@ -106,7 +106,7 @@ const Sidebar = ({ mobileOpen, onClose }) => {
                 ))}
             </List>
 
-            <Box sx={{ height: 16 }} />
+            <Divider sx={{ borderColor: '#173F63', mx: 1.5, my: 1 }} />
 
             <List sx={{ px: 1.5, flex: 1 }}>
                 <ListItemButton onClick={handleAdminClick} sx={navSx}>
@@ -124,6 +124,8 @@ const Sidebar = ({ mobileOpen, onClose }) => {
                     ))}
                 </Box>
             </List>
+
+            <Divider sx={{ borderColor: '#173F63', mx: 1.5, my: 1 }} />
 
             <List sx={{ px: 1.5 }}>
                 <ListItemButton component={NavLink} to="/settings" onClick={handleNavClick} sx={navSx}>

@@ -1,0 +1,77 @@
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { Box, Typography, Badge, IconButton, Tooltip } from '@mui/material';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import { getCustomers } from '../services/api.js';
+import { getCurrentUser } from '../utils/auth.js';
+
+const pageInfo = {
+    '/dashboard': { title: 'Dashboard', subtitle: 'Ongoing repairs at a glance' },
+    '/all': { title: 'Customers', subtitle: 'All customer records' },
+    '/Allorders': { title: 'Orders', subtitle: 'All customer orders' },
+    '/orders': { title: 'Orders', subtitle: 'Orders awaiting completion' },
+    '/add': { title: 'Add new entry', subtitle: 'Add new customer and order details' },
+};
+
+const initials = (name) => {
+    if (!name) return '?';
+    return name.slice(0, 2).toUpperCase();
+}
+
+const Header = () => {
+    const location = useLocation();
+    const [pendingCount, setPendingCount] = useState(0);
+    const username = getCurrentUser();
+
+    useEffect(() => {
+        const loadCount = async () => {
+            const response = await getCustomers();
+            setPendingCount(response.data.filter(c => c.status === 'pending').length);
+        }
+        loadCount();
+    }, [location.pathname]);
+
+    const info = pageInfo[location.pathname] || { title: '', subtitle: '' };
+
+    return (
+        <Box sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            px: 4,
+            py: 2.5,
+            backgroundColor: '#fff',
+            borderBottom: '1px solid #E5E7EB',
+        }}>
+            <Box>
+                <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#0B2E4F' }}>{info.title}</Typography>
+                <Typography variant="body2" sx={{ color: '#5F5E5A' }}>{info.subtitle}</Typography>
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2.5 }}>
+                <Tooltip title={`${pendingCount} pending repair${pendingCount === 1 ? '' : 's'}`}>
+                    <IconButton>
+                        <Badge badgeContent={pendingCount} color="warning">
+                            <NotificationsIcon sx={{ color: '#0B2E4F' }} />
+                        </Badge>
+                    </IconButton>
+                </Tooltip>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                    <Box sx={{
+                        width: 40, height: 40, borderRadius: '50%',
+                        backgroundColor: '#0E9594', color: '#fff',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        fontWeight: 'bold', fontSize: 14,
+                    }}>
+                        {initials(username)}
+                    </Box>
+                    <Box>
+                        <Typography sx={{ fontWeight: 'bold', fontSize: 14, color: '#0B2E4F', lineHeight: 1.2 }}>{username || 'User'}</Typography>
+                        <Typography sx={{ fontSize: 12, color: '#888780' }}>Admin</Typography>
+                    </Box>
+                </Box>
+            </Box>
+        </Box>
+    );
+};
+
+export default Header;

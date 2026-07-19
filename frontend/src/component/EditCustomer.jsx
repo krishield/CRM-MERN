@@ -57,7 +57,7 @@ const EditCustomer = () => {
 
     const editCustomerDetails = async () => {
         await editCustomer(customer, id);
-        nevigate('/board');
+        nevigate('/dashboard');
     }
 
     return (

@@ -1,34 +1,20 @@
-
-import { FormControl, FormGroup, InputLabel, Input, Typography, styled, Button, Select, MenuItem, Grid, Box } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import {
+    Box, Paper, Typography, Button, Select, MenuItem, TextField,
+    InputAdornment, Grid
+} from "@mui/material";
+import PersonIcon from '@mui/icons-material/Person';
+import PhoneIcon from '@mui/icons-material/Phone';
+import BuildIcon from '@mui/icons-material/Build';
+import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
+import DescriptionIcon from '@mui/icons-material/Description';
+import DevicesIcon from '@mui/icons-material/Devices';
+import LabelIcon from '@mui/icons-material/Label';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import Inventory2Icon from '@mui/icons-material/Inventory2';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { addCustomer, addOrder } from "../services/api.js";
 import { useNavigate } from "react-router-dom";
-
-const Container = styled(FormGroup)`
-    width: 90%;
-    max-width: 1100px;
-    margin: 2% auto 0 auto;
-    padding: 32px;
-    background-color: #FFFFFF;
-    border-radius: 12px;
-    box-shadow: 0 1px 3px rgba(11, 46, 79, 0.12);
-
-    & > div {
-        margin-top: 20px;
-    }
-`;
-
-const Title = styled(Typography)`
-font-size: 26px;
-font-weight: bold;
-margin-bottom: 16px;
-color: #0B2E4F;
-text-transform: uppercase;
-letter-spacing: 1px;
-border-bottom: 3px solid #0E9594;
-padding-bottom: 8px;
-`;
-
 
 const defaultValue = {
     device: '--',
@@ -45,41 +31,44 @@ const defaultValue = {
     productDetails: '--',
     totalAmount: '--',
     advanceAmount: '--',
-
 }
 
+const SectionHeader = ({ icon, color, label }) => (
+    <Box sx={{ mb: 3 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+            <Box sx={{
+                width: 40, height: 40, borderRadius: '50%', backgroundColor: color,
+                display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff',
+            }}>
+                {icon}
+            </Box>
+            <Typography sx={{ fontWeight: 'bold', color: '#0B2E4F', letterSpacing: 1 }}>{label}</Typography>
+        </Box>
+        <Box sx={{ width: 48, height: 3, backgroundColor: color, borderRadius: 2, mt: 1, ml: '52px' }} />
+    </Box>
+);
 
 const AddCustomer = () => {
-
     const [customer, setCustomer] = useState(defaultValue);
     const [order, setOrder] = useState(defaultValue);
     const nevigate = useNavigate();
 
     const onValueChange = (e) => {
-        console.log(e.target.name, e.target.value)
         setCustomer({ ...customer, [e.target.name]: e.target.value })
         setOrder({ ...order, [e.target.name]: e.target.value })
     }
 
     const addCustomerDetails = async () => {
         const currentTime = new Date().toLocaleTimeString('en-IN', {
-            timeZone: 'Asia/Kolkata',
-            hour12: true,
-            hour: 'numeric',
-            minute: 'numeric'
+            timeZone: 'Asia/Kolkata', hour12: true, hour: 'numeric', minute: 'numeric'
         });
         const currentDate = new Date().toLocaleString('en-IN', {
-            timeZone: 'Asia/Kolkata',
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric'
+            timeZone: 'Asia/Kolkata', day: 'numeric', month: 'long', year: 'numeric'
         });
-
         customer.time = currentTime;
         customer.date = currentDate;
-        console.log(customer);
         await addCustomer(customer);
-        nevigate('/board')
+        nevigate('/dashboard')
     }
 
     const addOrderDetails = async () => {
@@ -96,116 +85,138 @@ const AddCustomer = () => {
     }
 
     return (
+        <Box sx={{ p: 4 }}>
+            <Grid container spacing={3}>
+                <Grid item xs={12} md={6}>
+                    <Paper sx={{ p: 3.5, borderRadius: 3 }}>
+                        <SectionHeader icon={<PersonIcon />} color="#185FA5" label="NEW CUSTOMER" />
 
-        <Container>
-            <Grid container spacing={4}>
-                <Grid item xs={10} md={6}>
-                    <Title variant="h4" style={{ width: '80%' }}>New Customer</Title>
-                    <FormControl fullWidth style={{ width: '80%' }}>
-                        <Select defaultValue='device' onChange={(e) => onValueChange(e)} name='device'>
-                            <MenuItem value='device' disabled>Select Type</MenuItem>
+                        <Typography variant="body2" sx={{ mb: 0.5, fontWeight: 'bold', color: '#0B2E4F' }}>Select type</Typography>
+                        <Select
+                            fullWidth
+                            defaultValue='device'
+                            onChange={(e) => onValueChange(e)}
+                            name='device'
+                            startAdornment={<InputAdornment position="start"><DevicesIcon sx={{ color: '#888780' }} /></InputAdornment>}
+                            sx={{ mb: 2.5 }}
+                        >
+                            <MenuItem value='device' disabled>Select type</MenuItem>
                             <MenuItem value='Laptop'>Laptop</MenuItem>
                             <MenuItem value='Desktop'>Desktop</MenuItem>
                             <MenuItem value='Mobile'>Mobile</MenuItem>
                             <MenuItem value='Tablet'>Tablet</MenuItem>
                             <MenuItem value='Printer'>Printer</MenuItem>
                         </Select>
-                    </FormControl>
-                    <Box mt={2}>
-                        <FormControl fullWidth style={{ width: '80%' }}>
-                            <InputLabel>Brand/Model</InputLabel>
-                            <Input onChange={(e) => onValueChange(e)} name='brand' />
-                        </FormControl>
-                    </Box>
-                    <Box mt={2}>
-                        <FormControl fullWidth style={{ width: '80%' }}>
-                            <InputLabel>Customer Name</InputLabel>
-                            <Input onChange={(e) => onValueChange(e)} name='name' />
-                        </FormControl>
-                    </Box>
-                    <Box mt={2}>
-                        <FormControl fullWidth style={{ width: '80%' }}>
-                            <InputLabel>Mobile No.</InputLabel>
-                            <Input onChange={(e) => onValueChange(e)} name='mobile' />
-                        </FormControl>
-                    </Box>
-                    <Box mt={2}>
-                        <FormControl fullWidth style={{ width: '80%' }}>
-                            <InputLabel>Problem</InputLabel>
-                            <Input onChange={(e) => onValueChange(e)} name='problem' />
-                        </FormControl>
-                    </Box>
-                    <Box mt={2}>
-                        <FormControl fullWidth style={{ width: '80%' }}>
-                            <InputLabel>Estimated Cost</InputLabel>
-                            <Input onChange={(e) => onValueChange(e)} name='cost' />
-                        </FormControl>
-                    </Box>
-                    <Box mt={2}>
-                        <FormControl fullWidth style={{ width: '80%' }}>
-                            <InputLabel>Note</InputLabel>
-                            <Input onChange={(e) => onValueChange(e)} name='note' />
-                        </FormControl>
-                    </Box>
-                    <Box mt={2}>
-                        <FormControl fullWidth style={{ width: '80%' }}>
-                            <Button variant="contained" style={{ width: '100px', borderRadius: '10px', fontWeight: 'bold', fontSize: 20, marginTop: 10 }} onClick={() => addCustomerDetails()}>ADD</Button>
-                        </FormControl>
-                    </Box>
+
+                        <Typography variant="body2" sx={{ mb: 0.5, fontWeight: 'bold', color: '#0B2E4F' }}>Brand / model</Typography>
+                        <TextField
+                            fullWidth placeholder="Enter brand or model" name='brand' onChange={onValueChange}
+                            InputProps={{ startAdornment: <InputAdornment position="start"><LabelIcon sx={{ color: '#888780' }} /></InputAdornment> }}
+                            sx={{ mb: 2.5 }}
+                        />
+
+                        <Typography variant="body2" sx={{ mb: 0.5, fontWeight: 'bold', color: '#0B2E4F' }}>Customer name</Typography>
+                        <TextField
+                            fullWidth placeholder="Enter customer name" name='name' onChange={onValueChange}
+                            InputProps={{ startAdornment: <InputAdornment position="start"><PersonIcon sx={{ color: '#888780' }} /></InputAdornment> }}
+                            sx={{ mb: 2.5 }}
+                        />
+
+                        <Typography variant="body2" sx={{ mb: 0.5, fontWeight: 'bold', color: '#0B2E4F' }}>Mobile no.</Typography>
+                        <TextField
+                            fullWidth placeholder="Enter mobile number" name='mobile' onChange={onValueChange}
+                            InputProps={{ startAdornment: <InputAdornment position="start"><PhoneIcon sx={{ color: '#888780' }} /></InputAdornment> }}
+                            sx={{ mb: 2.5 }}
+                        />
+
+                        <Typography variant="body2" sx={{ mb: 0.5, fontWeight: 'bold', color: '#0B2E4F' }}>Problem</Typography>
+                        <TextField
+                            fullWidth placeholder="Describe the problem" name='problem' onChange={onValueChange}
+                            InputProps={{ startAdornment: <InputAdornment position="start"><BuildIcon sx={{ color: '#888780' }} /></InputAdornment> }}
+                            sx={{ mb: 2.5 }}
+                        />
+
+                        <Typography variant="body2" sx={{ mb: 0.5, fontWeight: 'bold', color: '#0B2E4F' }}>Estimated cost</Typography>
+                        <TextField
+                            fullWidth placeholder="Enter estimated cost" name='cost' onChange={onValueChange}
+                            InputProps={{ startAdornment: <InputAdornment position="start"><CurrencyRupeeIcon sx={{ color: '#888780' }} /></InputAdornment> }}
+                            sx={{ mb: 2.5 }}
+                        />
+
+                        <Typography variant="body2" sx={{ mb: 0.5, fontWeight: 'bold', color: '#0B2E4F' }}>Note</Typography>
+                        <TextField
+                            fullWidth placeholder="Additional notes (optional)" name='note' onChange={onValueChange}
+                            InputProps={{ startAdornment: <InputAdornment position="start"><DescriptionIcon sx={{ color: '#888780' }} /></InputAdornment> }}
+                            sx={{ mb: 3 }}
+                        />
+
+                        <Button
+                            fullWidth variant="contained" startIcon={<AddCircleIcon />}
+                            sx={{ backgroundColor: '#185FA5', py: 1.25, fontWeight: 'bold', borderRadius: 2 }}
+                            onClick={addCustomerDetails}
+                        >
+                            Add customer
+                        </Button>
+                    </Paper>
                 </Grid>
+
                 <Grid item xs={12} md={6}>
-                    <Box mt={4}>
-                        <Title variant="h4" style={{ width: '80%' }}>New Order</Title>
-                        <FormControl fullWidth style={{ width: '80%' }}>
-                            <InputLabel>Name</InputLabel>
-                            <Input onChange={(e) => onValueChange(e)} name='name' />
-                        </FormControl>
+                    <Paper sx={{ p: 3.5, borderRadius: 3 }}>
+                        <SectionHeader icon={<ShoppingCartIcon />} color="#16A34A" label="NEW ORDER" />
 
-                        <Box mt={2}>
-                            <FormControl fullWidth style={{ width: '80%' }}>
-                                <InputLabel>Mobile No.</InputLabel>
-                                <Input onChange={(e) => onValueChange(e)} name='mobile' />
-                            </FormControl>
-                        </Box>
+                        <Typography variant="body2" sx={{ mb: 0.5, fontWeight: 'bold', color: '#0B2E4F' }}>Name</Typography>
+                        <TextField
+                            fullWidth placeholder="Enter customer name" name='name' onChange={onValueChange}
+                            InputProps={{ startAdornment: <InputAdornment position="start"><PersonIcon sx={{ color: '#888780' }} /></InputAdornment> }}
+                            sx={{ mb: 2.5 }}
+                        />
 
-                        <Box mt={2}>
-                            <FormControl fullWidth style={{ width: '80%' }}>
-                                <InputLabel>Product Details</InputLabel>
-                                <Input onChange={(e) => onValueChange(e)} name='productDetails' />
-                            </FormControl>
-                        </Box>
+                        <Typography variant="body2" sx={{ mb: 0.5, fontWeight: 'bold', color: '#0B2E4F' }}>Mobile no.</Typography>
+                        <TextField
+                            fullWidth placeholder="Enter mobile number" name='mobile' onChange={onValueChange}
+                            InputProps={{ startAdornment: <InputAdornment position="start"><PhoneIcon sx={{ color: '#888780' }} /></InputAdornment> }}
+                            sx={{ mb: 2.5 }}
+                        />
 
-                        <Box mt={2}>
-                            <FormControl fullWidth style={{ width: '80%' }}>
-                                <InputLabel>Total Amount</InputLabel>
-                                <Input onChange={(e) => onValueChange(e)} name='totalAmount' />
-                            </FormControl>
-                        </Box>
+                        <Typography variant="body2" sx={{ mb: 0.5, fontWeight: 'bold', color: '#0B2E4F' }}>Product details</Typography>
+                        <TextField
+                            fullWidth placeholder="Enter product details" name='productDetails' onChange={onValueChange}
+                            InputProps={{ startAdornment: <InputAdornment position="start"><Inventory2Icon sx={{ color: '#888780' }} /></InputAdornment> }}
+                            sx={{ mb: 2.5 }}
+                        />
 
-                        <Box mt={5}>
-                            <FormControl fullWidth style={{ width: '80%' }}>
-                                <InputLabel>Advance Amount</InputLabel>
-                                <Input onChange={(e) => onValueChange(e)} name='advanceAmount' />
-                            </FormControl>
-                        </Box>
-                        <Box mt={5}>
-                            <FormControl fullWidth style={{ width: '80%' }}>
-                                <InputLabel>Note</InputLabel>
-                                <Input onChange={(e) => onValueChange(e)} name='note' />
-                            </FormControl>
-                        </Box>
-                        <Box mt={5}>
-                            <FormControl fullWidth style={{ width: '80%' }}>
-                                <Button variant="contained" style={{ width: '100px', borderRadius: '10px', fontWeight: 'bold', fontSize: 20, marginTop: 20 }} onClick={() => addOrderDetails()}>ADD</Button>
-                            </FormControl>
+                        <Typography variant="body2" sx={{ mb: 0.5, fontWeight: 'bold', color: '#0B2E4F' }}>Total amount</Typography>
+                        <TextField
+                            fullWidth placeholder="Enter total amount" name='totalAmount' onChange={onValueChange}
+                            InputProps={{ startAdornment: <InputAdornment position="start"><CurrencyRupeeIcon sx={{ color: '#888780' }} /></InputAdornment> }}
+                            sx={{ mb: 2.5 }}
+                        />
 
-                        </Box>
+                        <Typography variant="body2" sx={{ mb: 0.5, fontWeight: 'bold', color: '#0B2E4F' }}>Advance amount</Typography>
+                        <TextField
+                            fullWidth placeholder="Enter advance amount" name='advanceAmount' onChange={onValueChange}
+                            InputProps={{ startAdornment: <InputAdornment position="start"><CurrencyRupeeIcon sx={{ color: '#888780' }} /></InputAdornment> }}
+                            sx={{ mb: 2.5 }}
+                        />
 
-                    </Box>
+                        <Typography variant="body2" sx={{ mb: 0.5, fontWeight: 'bold', color: '#0B2E4F' }}>Note</Typography>
+                        <TextField
+                            fullWidth placeholder="Additional notes (optional)" name='note' onChange={onValueChange}
+                            InputProps={{ startAdornment: <InputAdornment position="start"><DescriptionIcon sx={{ color: '#888780' }} /></InputAdornment> }}
+                            sx={{ mb: 3 }}
+                        />
+
+                        <Button
+                            fullWidth variant="contained" startIcon={<AddCircleIcon />}
+                            sx={{ backgroundColor: '#16A34A', py: 1.25, fontWeight: 'bold', borderRadius: 2 }}
+                            onClick={addOrderDetails}
+                        >
+                            Add order
+                        </Button>
+                    </Paper>
                 </Grid>
             </Grid>
-        </Container >
-
+        </Box>
     )
 }
 

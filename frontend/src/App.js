@@ -1,6 +1,5 @@
 import './App.css';
 
-import NavBar from './component/NavBar.jsx';
 import AddCustomer from './component/AddCustomer.jsx';
 import Board from './component/Board.jsx';
 import AllCustomers from './component/AllCustomers.jsx';
@@ -11,17 +10,17 @@ import AllOrders from './component/AllOrders.jsx';
 import Orders from './component/Orders.jsx';
 import PrivateRoute from './component/PrivateRoute.jsx';
 
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <NavBar />
         <Routes>
           <Route path='/login' element={<LoginForm />} />
-          <Route path='/' element={<PrivateRoute><AddCustomer /></PrivateRoute>} />
-          <Route path='/board' element={<PrivateRoute><Board /></PrivateRoute>} />
+          <Route path='/' element={<Navigate to="/dashboard" replace />} />
+          <Route path='/dashboard' element={<PrivateRoute><Board /></PrivateRoute>} />
+          <Route path='/add' element={<PrivateRoute><AddCustomer /></PrivateRoute>} />
           <Route path='/all' element={<PrivateRoute><AllCustomers /></PrivateRoute>} />
           <Route path='/edit/:id' element={<PrivateRoute><EditCustomer /></PrivateRoute>} />
           <Route path='/info/:id' element={<PrivateRoute><Details /></PrivateRoute>} />

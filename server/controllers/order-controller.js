@@ -1,10 +1,16 @@
 import Order from '../schema/order-schema.js'
+import { nextSequence } from '../schema/counter-schema.js'
+import Settings from '../schema/settings-schema.js'
 
 export const addOrder = async (request, response) => {
     const order = request.body;
-    const newOrder = new Order(order);
 
     try {
+        const seq = await nextSequence('order');
+        const settings = await Settings.findOne({});
+        const prefix = (settings && settings.orderIdPrefix) || 'OD';
+        order.orderId = `${prefix}${String(seq).padStart(3, '0')}`;
+        const newOrder = new Order(order);
         await newOrder.save();
         response.status(201).json(newOrder);
     } catch (error) {

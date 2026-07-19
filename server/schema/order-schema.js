@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const orderSchema = mongoose.Schema({
+    orderId: { type: String, unique: true, sparse: true },
     name: String,
     mobile: String,
     productDetails: String,

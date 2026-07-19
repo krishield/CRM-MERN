@@ -135,7 +135,7 @@ const Orders = () => {
                             {
                                 orders.map(order => (
                                     <TBody key={order._id}>
-                                        <TableCell>{order._id}</TableCell>
+                                        <TableCell>{order.orderId}</TableCell>
                                         <TableCell>{order.date + ' @ ' + order.time}</TableCell>
                                         <TableCell>{order.name}</TableCell>
                                         <TableCell>{order.mobile}</TableCell>

@@ -27,11 +27,12 @@ export const getSettings = async (request, response) => {
 
 export const updateSettings = async (request, response) => {
     try {
-        const { crmName, logo, idPrefix, deviceTypes } = request.body;
+        const { crmName, logo, idPrefix, orderIdPrefix, deviceTypes } = request.body;
         const settings = await getOrCreateSettings();
         if (crmName !== undefined) settings.crmName = crmName;
         if (logo !== undefined) settings.logo = logo;
         if (idPrefix !== undefined) settings.idPrefix = idPrefix;
+        if (orderIdPrefix !== undefined) settings.orderIdPrefix = orderIdPrefix;
         if (deviceTypes !== undefined) settings.deviceTypes = deviceTypes;
         await settings.save();
         const { adminPasswordHash, ...safeSettings } = settings.toObject();

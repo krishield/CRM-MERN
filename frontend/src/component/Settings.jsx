@@ -12,6 +12,7 @@ const Settings = () => {
     const [crmName, setCrmName] = useState('');
     const [logo, setLogo] = useState('');
     const [idPrefix, setIdPrefix] = useState('');
+    const [orderIdPrefix, setOrderIdPrefix] = useState('');
     const [deviceTypes, setDeviceTypes] = useState([]);
     const [newDevice, setNewDevice] = useState('');
     const [saved, setSaved] = useState(false);
@@ -27,6 +28,7 @@ const Settings = () => {
         setCrmName(settings.crmName || '');
         setLogo(settings.logo || '');
         setIdPrefix(settings.idPrefix || '');
+        setOrderIdPrefix(settings.orderIdPrefix || '');
         setDeviceTypes(settings.deviceTypes || []);
     }, [settings]);
 
@@ -50,7 +52,7 @@ const Settings = () => {
     }
 
     const handleSave = async () => {
-        await updateSettings({ crmName, logo, idPrefix, deviceTypes });
+        await updateSettings({ crmName, logo, idPrefix, orderIdPrefix, deviceTypes });
         await refreshSettings();
         setSaved(true);
         setTimeout(() => setSaved(false), 2000);
@@ -114,14 +116,28 @@ const Settings = () => {
                     sx={{ mb: 3 }}
                 />
 
-                <Typography variant="body2" sx={{ mb: 1, fontWeight: 'bold', color: '#0B2E4F' }}>Customer ID prefix</Typography>
-                <TextField
-                    value={idPrefix}
-                    onChange={(e) => setIdPrefix(e.target.value.toUpperCase())}
-                    placeholder="e.g. KD"
-                    helperText={`New customers will be numbered like ${idPrefix || 'KD'}001`}
-                    sx={{ mb: 3, width: 160 }}
-                />
+                <Box sx={{ display: 'flex', gap: 2 }}>
+                    <Box>
+                        <Typography variant="body2" sx={{ mb: 1, fontWeight: 'bold', color: '#0B2E4F' }}>Customer ID prefix</Typography>
+                        <TextField
+                            value={idPrefix}
+                            onChange={(e) => setIdPrefix(e.target.value.toUpperCase())}
+                            placeholder="e.g. KD"
+                            helperText={`e.g. ${idPrefix || 'KD'}001`}
+                            sx={{ mb: 3, width: 160 }}
+                        />
+                    </Box>
+                    <Box>
+                        <Typography variant="body2" sx={{ mb: 1, fontWeight: 'bold', color: '#0B2E4F' }}>Order ID prefix</Typography>
+                        <TextField
+                            value={orderIdPrefix}
+                            onChange={(e) => setOrderIdPrefix(e.target.value.toUpperCase())}
+                            placeholder="e.g. OD"
+                            helperText={`e.g. ${orderIdPrefix || 'OD'}001`}
+                            sx={{ mb: 3, width: 160 }}
+                        />
+                    </Box>
+                </Box>
 
                 <Typography variant="body2" sx={{ mb: 1, fontWeight: 'bold', color: '#0B2E4F' }}>Device types</Typography>
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 1.5 }}>

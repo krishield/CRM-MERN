@@ -98,6 +98,7 @@ const AllOrders = () => {
                 <Table>
                     <TableHead>
                         <THead>
+                            <TableCell>Id</TableCell>
                             <TableCell>Date</TableCell>
                             <TableCell>Name</TableCell>
                             <TableCell>Contact</TableCell>
@@ -112,6 +113,7 @@ const AllOrders = () => {
                     <TableBody>
                         {filtered.map(order => (
                             <TBody key={order._id}>
+                                <TableCell>{order.orderId}</TableCell>
                                 <TableCell>{order.date + ' @ ' + order.time}</TableCell>
                                 <TableCell>{order.name}</TableCell>
                                 <TableCell>{order.mobile}</TableCell>
@@ -138,7 +140,7 @@ const AllOrders = () => {
                         ))}
                         {filtered.length === 0 && (
                             <TableRow>
-                                <TableCell colSpan={9} sx={{ textAlign: 'center', color: '#888780', py: 4 }}>
+                                <TableCell colSpan={10} sx={{ textAlign: 'center', color: '#888780', py: 4 }}>
                                     No orders match your search.
                                 </TableCell>
                             </TableRow>

@@ -15,6 +15,7 @@ import Inventory2Icon from '@mui/icons-material/Inventory2';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { addCustomer, addOrder } from "../services/api.js";
 import { useNavigate } from "react-router-dom";
+import { useSettings } from "../context/SettingsContext.jsx";
 
 const defaultValue = {
     device: '--',
@@ -52,6 +53,8 @@ const AddCustomer = () => {
     const [customer, setCustomer] = useState(defaultValue);
     const [order, setOrder] = useState(defaultValue);
     const nevigate = useNavigate();
+    const { settings } = useSettings();
+    const deviceTypes = settings.deviceTypes && settings.deviceTypes.length ? settings.deviceTypes : ['Laptop', 'Desktop', 'Mobile', 'Tablet', 'Printer'];
 
     const onValueChange = (e) => {
         setCustomer({ ...customer, [e.target.name]: e.target.value })
@@ -101,11 +104,9 @@ const AddCustomer = () => {
                             sx={{ mb: 2.5 }}
                         >
                             <MenuItem value='device' disabled>Select type</MenuItem>
-                            <MenuItem value='Laptop'>Laptop</MenuItem>
-                            <MenuItem value='Desktop'>Desktop</MenuItem>
-                            <MenuItem value='Mobile'>Mobile</MenuItem>
-                            <MenuItem value='Tablet'>Tablet</MenuItem>
-                            <MenuItem value='Printer'>Printer</MenuItem>
+                            {deviceTypes.map(d => (
+                                <MenuItem key={d} value={d}>{d}</MenuItem>
+                            ))}
                         </Select>
 
                         <Typography variant="body2" sx={{ mb: 0.5, fontWeight: 'bold', color: '#0B2E4F' }}>Brand / model</Typography>

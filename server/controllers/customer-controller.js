@@ -1,12 +1,15 @@
 import Customer from '../schema/customer-schema.js'
 import { nextSequence } from '../schema/counter-schema.js'
+import Settings from '../schema/settings-schema.js'
 
 export const addCustomer = async (request, response) => {
     const customer = request.body;
 
     try {
         const seq = await nextSequence('customer');
-        customer.customerId = `KD${String(seq).padStart(3, '0')}`;
+        const settings = await Settings.findOne({});
+        const prefix = (settings && settings.idPrefix) || 'KD';
+        customer.customerId = `${prefix}${String(seq).padStart(3, '0')}`;
         const newCustomer = new Customer(customer);
         await newCustomer.save();
         response.status(201).json(newCustomer);

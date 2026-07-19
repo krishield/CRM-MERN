@@ -107,3 +107,7 @@ export const updateSettings = async (data) => {
         console.log("error while calling update settings API", error);
     }
 }
+
+export const changePassword = async (currentPassword, newPassword) => {
+    return await apiClient.put('/settings/password', { currentPassword, newPassword });
+}

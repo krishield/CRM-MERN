@@ -111,3 +111,11 @@ export const updateSettings = async (data) => {
 export const changePassword = async (currentPassword, newPassword) => {
     return await apiClient.put('/settings/password', { currentPassword, newPassword });
 }
+
+export const setOwnerPin = async (currentPin, newPin) => {
+    return await apiClient.put('/settings/owner-pin', { currentPin, newPin });
+}
+
+export const verifyOwnerPin = async (pin) => {
+    return await apiClient.post('/settings/verify-pin', { pin });
+}

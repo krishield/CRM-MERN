@@ -4,8 +4,9 @@ import UploadFileIcon from '@mui/icons-material/UploadFile';
 import SaveIcon from '@mui/icons-material/Save';
 import AddIcon from '@mui/icons-material/Add';
 import LockResetIcon from '@mui/icons-material/LockReset';
+import LockIcon from '@mui/icons-material/Lock';
 import { useSettings } from '../context/SettingsContext.jsx';
-import { updateSettings, changePassword } from '../services/api.js';
+import { updateSettings, changePassword, setOwnerPin } from '../services/api.js';
 
 const Settings = () => {
     const { settings, refreshSettings } = useSettings();
@@ -24,6 +25,12 @@ const Settings = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [passwordMessage, setPasswordMessage] = useState('');
     const [passwordError, setPasswordError] = useState(false);
+
+    const [currentPin, setCurrentPin] = useState('');
+    const [newPin, setNewPin] = useState('');
+    const [confirmPin, setConfirmPin] = useState('');
+    const [pinMessage, setPinMessage] = useState('');
+    const [pinError, setPinError] = useState(false);
 
     useEffect(() => {
         setCrmName(settings.crmName || '');
@@ -77,6 +84,27 @@ const Settings = () => {
         } catch (error) {
             setPasswordError(true);
             setPasswordMessage(error.response?.data?.message || 'Could not update password');
+        }
+    }
+
+    const handlePinChange = async () => {
+        setPinMessage('');
+        if (newPin !== confirmPin) {
+            setPinError(true);
+            setPinMessage("New PINs don't match");
+            return;
+        }
+        try {
+            await setOwnerPin(currentPin, newPin);
+            setPinError(false);
+            setPinMessage('PIN updated');
+            setCurrentPin('');
+            setNewPin('');
+            setConfirmPin('');
+            await refreshSettings();
+        } catch (error) {
+            setPinError(true);
+            setPinMessage(error.response?.data?.message || 'Could not update PIN');
         }
     }
 
@@ -224,6 +252,64 @@ const Settings = () => {
                 {passwordMessage && (
                     <Typography variant="body2" sx={{ color: passwordError ? '#DC2626' : '#16A34A', mt: 1.5 }}>
                         {passwordMessage}
+                    </Typography>
+                )}
+            </Paper>
+
+            <Paper sx={{ p: 3.5, borderRadius: 3, flex: '1 1 320px', maxWidth: 480 }}>
+                <Typography sx={{ fontWeight: 'bold', color: '#0B2E4F', mb: 1 }}>Owner PIN</Typography>
+                <Typography variant="body2" sx={{ color: '#5F5E5A', mb: 3 }}>
+                    Locks Dashboard, Customers, and Revenue behind a separate PIN, even when logged in.
+                </Typography>
+
+                {settings.ownerPinSet && (
+                    <>
+                        <Typography variant="body2" sx={{ mb: 1, fontWeight: 'bold', color: '#0B2E4F' }}>Current PIN</Typography>
+                        <TextField
+                            fullWidth
+                            type="password"
+                            inputMode="numeric"
+                            value={currentPin}
+                            onChange={(e) => setCurrentPin(e.target.value)}
+                            sx={{ mb: 2.5 }}
+                        />
+                    </>
+                )}
+
+                <Typography variant="body2" sx={{ mb: 1, fontWeight: 'bold', color: '#0B2E4F' }}>
+                    {settings.ownerPinSet ? 'New PIN' : 'Set PIN'}
+                </Typography>
+                <TextField
+                    fullWidth
+                    type="password"
+                    inputMode="numeric"
+                    value={newPin}
+                    onChange={(e) => setNewPin(e.target.value)}
+                    placeholder="At least 4 digits"
+                    sx={{ mb: 2.5 }}
+                />
+
+                <Typography variant="body2" sx={{ mb: 1, fontWeight: 'bold', color: '#0B2E4F' }}>Confirm PIN</Typography>
+                <TextField
+                    fullWidth
+                    type="password"
+                    inputMode="numeric"
+                    value={confirmPin}
+                    onChange={(e) => setConfirmPin(e.target.value)}
+                    sx={{ mb: 3 }}
+                />
+
+                <Button
+                    variant="contained"
+                    startIcon={<LockIcon />}
+                    sx={{ backgroundColor: '#185FA5', fontWeight: 'bold', borderRadius: 2 }}
+                    onClick={handlePinChange}
+                >
+                    {settings.ownerPinSet ? 'Update PIN' : 'Set PIN'}
+                </Button>
+                {pinMessage && (
+                    <Typography variant="body2" sx={{ color: pinError ? '#DC2626' : '#16A34A', mt: 1.5 }}>
+                        {pinMessage}
                     </Typography>
                 )}
             </Paper>

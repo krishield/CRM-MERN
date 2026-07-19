@@ -8,6 +8,7 @@ const settingsSchema = mongoose.Schema({
     ordersEnabled: { type: Boolean, default: true },
     deviceTypes: { type: [String], default: ['Laptop', 'Desktop', 'Mobile', 'Tablet', 'Printer'] },
     adminPasswordHash: { type: String, default: '' },
+    ownerPinHash: { type: String, default: '' },
 });
 
 const Settings = mongoose.model('settings', settingsSchema);

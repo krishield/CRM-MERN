@@ -7,7 +7,10 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import PaidIcon from '@mui/icons-material/Paid';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
+import LockIcon from '@mui/icons-material/Lock';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
 import { useSettings } from '../context/SettingsContext.jsx';
+import { useOwnerLock } from '../context/OwnerLockContext.jsx';
 
 const topItems = [
     { label: 'Add new', to: '/add', icon: <AddCircleIcon /> },
@@ -27,6 +30,7 @@ const navSx = {
 const Sidebar = ({ mobileOpen, onClose }) => {
     const navigate = useNavigate();
     const { settings } = useSettings();
+    const { unlocked, openDialog, lock } = useOwnerLock();
     const isMobile = useMediaQuery('(max-width:900px)');
 
     const mainItems = [
@@ -38,10 +42,20 @@ const Sidebar = ({ mobileOpen, onClose }) => {
 
     const handleLogout = () => {
         localStorage.removeItem('token');
+        lock();
         navigate('/login');
     };
 
     const handleNavClick = () => {
+        if (isMobile && onClose) onClose();
+    };
+
+    const handleAdminClick = () => {
+        if (unlocked) {
+            lock();
+        } else {
+            openDialog();
+        }
         if (isMobile && onClose) onClose();
     };
 
@@ -92,6 +106,15 @@ const Sidebar = ({ mobileOpen, onClose }) => {
                 <ListItemButton component={NavLink} to="/settings" onClick={handleNavClick} sx={navSx}>
                     <ListItemIcon sx={{ color: 'inherit', minWidth: 36 }}><SettingsIcon /></ListItemIcon>
                     <ListItemText primary="Settings" />
+                </ListItemButton>
+            </List>
+
+            <List sx={{ px: 1.5 }}>
+                <ListItemButton onClick={handleAdminClick} sx={navSx}>
+                    <ListItemIcon sx={{ color: 'inherit', minWidth: 36 }}>
+                        {unlocked ? <LockOpenIcon /> : <LockIcon />}
+                    </ListItemIcon>
+                    <ListItemText primary={unlocked ? 'Admin (unlocked)' : 'Admin'} />
                 </ListItemButton>
             </List>
 

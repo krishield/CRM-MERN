@@ -15,11 +15,15 @@ const getOrCreateSettings = async () => {
     return settings;
 }
 
+const stripSecrets = (settings) => {
+    const { adminPasswordHash, ownerPinHash, ...safeSettings } = settings.toObject();
+    return { ...safeSettings, ownerPinSet: !!ownerPinHash };
+}
+
 export const getSettings = async (request, response) => {
     try {
         const settings = await getOrCreateSettings();
-        const { adminPasswordHash, ...safeSettings } = settings.toObject();
-        response.status(200).json(safeSettings);
+        response.status(200).json(stripSecrets(settings));
     } catch (error) {
         response.status(404).json({ message: error.message })
     }
@@ -36,8 +40,7 @@ export const updateSettings = async (request, response) => {
         if (deviceTypes !== undefined) settings.deviceTypes = deviceTypes;
         if (ordersEnabled !== undefined) settings.ordersEnabled = ordersEnabled;
         await settings.save();
-        const { adminPasswordHash, ...safeSettings } = settings.toObject();
-        response.status(200).json(safeSettings);
+        response.status(200).json(stripSecrets(settings));
     } catch (error) {
         response.status(409).json({ message: error.message })
     }
@@ -57,6 +60,44 @@ export const changePassword = async (request, response) => {
         settings.adminPasswordHash = bcrypt.hashSync(newPassword, 10);
         await settings.save();
         response.status(200).json({ message: 'Password updated' });
+    } catch (error) {
+        response.status(409).json({ message: error.message })
+    }
+}
+
+export const setOwnerPin = async (request, response) => {
+    try {
+        const { currentPin, newPin } = request.body;
+        if (!newPin || !/^\d{4,}$/.test(newPin)) {
+            return response.status(409).json({ message: 'PIN must be at least 4 digits' });
+        }
+        const settings = await getOrCreateSettings();
+        if (settings.ownerPinHash) {
+            const validCurrent = await bcrypt.compare(currentPin || '', settings.ownerPinHash);
+            if (!validCurrent) {
+                return response.status(403).json({ message: 'Current PIN is incorrect' });
+            }
+        }
+        settings.ownerPinHash = bcrypt.hashSync(newPin, 10);
+        await settings.save();
+        response.status(200).json({ message: 'PIN updated' });
+    } catch (error) {
+        response.status(409).json({ message: error.message })
+    }
+}
+
+export const verifyOwnerPin = async (request, response) => {
+    try {
+        const { pin } = request.body;
+        const settings = await getOrCreateSettings();
+        if (!settings.ownerPinHash) {
+            return response.status(409).json({ message: 'No owner PIN has been set yet' });
+        }
+        const valid = await bcrypt.compare(pin || '', settings.ownerPinHash);
+        if (!valid) {
+            return response.status(403).json({ message: 'Incorrect PIN' });
+        }
+        response.status(200).json({ valid: true });
     } catch (error) {
         response.status(409).json({ message: error.message })
     }

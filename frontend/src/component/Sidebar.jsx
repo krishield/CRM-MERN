@@ -13,13 +13,6 @@ const topItems = [
     { label: 'Add new', to: '/add', icon: <AddCircleIcon /> },
 ];
 
-const mainItems = [
-    { label: 'Dashboard', to: '/dashboard', icon: <SpaceDashboardIcon /> },
-    { label: 'Orders', to: '/Allorders', icon: <ShoppingBagIcon /> },
-    { label: 'Customers', to: '/all', icon: <PeopleAltIcon /> },
-    { label: 'Revenue', to: '/revenue', icon: <PaidIcon /> },
-];
-
 const navSx = {
     borderRadius: 2,
     mb: 0.5,
@@ -34,6 +27,13 @@ const navSx = {
 const Sidebar = () => {
     const navigate = useNavigate();
     const { settings } = useSettings();
+
+    const mainItems = [
+        { label: 'Dashboard', to: '/dashboard', icon: <SpaceDashboardIcon /> },
+        ...(settings.ordersEnabled !== false ? [{ label: 'Orders', to: '/Allorders', icon: <ShoppingBagIcon /> }] : []),
+        { label: 'Customers', to: '/all', icon: <PeopleAltIcon /> },
+        { label: 'Revenue', to: '/revenue', icon: <PaidIcon /> },
+    ];
 
     const handleLogout = () => {
         localStorage.removeItem('token');

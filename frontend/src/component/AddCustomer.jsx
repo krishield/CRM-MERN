@@ -102,11 +102,13 @@ const AddCustomer = () => {
         nevigate('/orders')
     }
 
+    const ordersEnabled = settings.ordersEnabled !== false;
+
     return (
         <Box sx={{ p: 4 }}>
             <Grid container spacing={3}>
-                <Grid item xs={12} md={6}>
-                    <Paper sx={{ p: 3.5, borderRadius: 3 }}>
+                <Grid item xs={12} md={ordersEnabled ? 6 : 12}>
+                    <Paper sx={{ p: 3.5, borderRadius: 3, maxWidth: ordersEnabled ? 'none' : 640 }}>
                         <SectionHeader icon={<PersonIcon />} color="#185FA5" label="NEW CUSTOMER" />
 
                         <Typography variant="body2" sx={{ mb: 0.5, fontWeight: 'bold', color: '#0B2E4F' }}>Select type</Typography>
@@ -181,6 +183,7 @@ const AddCustomer = () => {
                     </Paper>
                 </Grid>
 
+                {ordersEnabled && (
                 <Grid item xs={12} md={6}>
                     <Paper sx={{ p: 3.5, borderRadius: 3 }}>
                         <SectionHeader icon={<ShoppingCartIcon />} color="#16A34A" label="NEW ORDER" />
@@ -245,6 +248,7 @@ const AddCustomer = () => {
                         </Button>
                     </Paper>
                 </Grid>
+                )}
             </Grid>
         </Box>
     )

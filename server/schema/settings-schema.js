@@ -5,6 +5,7 @@ const settingsSchema = mongoose.Schema({
     logo: { type: String, default: '' },
     idPrefix: { type: String, default: 'KD' },
     orderIdPrefix: { type: String, default: 'OD' },
+    ordersEnabled: { type: Boolean, default: true },
     deviceTypes: { type: [String], default: ['Laptop', 'Desktop', 'Mobile', 'Tablet', 'Printer'] },
     adminPasswordHash: { type: String, default: '' },
 });

@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { Box, Paper, Typography, TextField, Button, Chip } from '@mui/material';
+import { Box, Paper, Typography, TextField, Button, Chip, Switch, FormControlLabel } from '@mui/material';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import SaveIcon from '@mui/icons-material/Save';
 import AddIcon from '@mui/icons-material/Add';
@@ -15,6 +15,7 @@ const Settings = () => {
     const [orderIdPrefix, setOrderIdPrefix] = useState('');
     const [deviceTypes, setDeviceTypes] = useState([]);
     const [newDevice, setNewDevice] = useState('');
+    const [ordersEnabled, setOrdersEnabled] = useState(true);
     const [saved, setSaved] = useState(false);
     const fileInputRef = useRef(null);
 
@@ -30,6 +31,7 @@ const Settings = () => {
         setIdPrefix(settings.idPrefix || '');
         setOrderIdPrefix(settings.orderIdPrefix || '');
         setDeviceTypes(settings.deviceTypes || []);
+        setOrdersEnabled(settings.ordersEnabled !== false);
     }, [settings]);
 
     const handleLogoChange = (e) => {
@@ -52,7 +54,7 @@ const Settings = () => {
     }
 
     const handleSave = async () => {
-        await updateSettings({ crmName, logo, idPrefix, orderIdPrefix, deviceTypes });
+        await updateSettings({ crmName, logo, idPrefix, orderIdPrefix, deviceTypes, ordersEnabled });
         await refreshSettings();
         setSaved(true);
         setTimeout(() => setSaved(false), 2000);
@@ -138,6 +140,17 @@ const Settings = () => {
                         />
                     </Box>
                 </Box>
+
+                <FormControlLabel
+                    sx={{ mb: 2 }}
+                    control={<Switch checked={ordersEnabled} onChange={(e) => setOrdersEnabled(e.target.checked)} />}
+                    label={
+                        <Box>
+                            <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#0B2E4F' }}>Enable orders</Typography>
+                            <Typography variant="caption" sx={{ color: '#888780' }}>Turn off to hide the Orders tab and order form</Typography>
+                        </Box>
+                    }
+                />
 
                 <Typography variant="body2" sx={{ mb: 1, fontWeight: 'bold', color: '#0B2E4F' }}>Device types</Typography>
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 1.5 }}>

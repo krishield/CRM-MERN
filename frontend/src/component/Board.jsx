@@ -1,7 +1,32 @@
 import { useEffect, useState } from 'react';
-import { Box, Paper, Typography, Button, Chip, TextField } from '@mui/material';
+import { Box, Paper, Typography, Button, Chip, TextField, IconButton, Tooltip } from '@mui/material';
 import { Link } from 'react-router-dom';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import { getCustomers, changeStatus, markDelivered, editCustomer } from '../services/api.js';
+
+const statusMessage = (c) => {
+    switch (c.status) {
+        case 'pending':
+            return `Hi ${c.name}, we've received your ${c.device} for repair (${c.problem}). We'll update you once it's checked.`;
+        case 'checked':
+            return `Hi ${c.name}, we've checked your ${c.device}. Estimated cost: ₹${c.cost || 'TBD'}. We'll proceed with the repair.`;
+        case 'completed':
+            return `Hi ${c.name}, your ${c.device} repair is complete. Let us know if you'd like to collect it.`;
+        case 'repaired':
+            return `Hi ${c.name}, good news! Your ${c.device} has been repaired and is ready for pickup.`;
+        case 'not-repaired':
+            return `Hi ${c.name}, unfortunately we couldn't repair your ${c.device}. Please visit us to discuss or collect your device.`;
+        default:
+            return `Hi ${c.name}, regarding your ${c.device} at our shop.`;
+    }
+}
+
+const whatsappLink = (c) => {
+    const digits = String(c.mobile || '').replace(/\D/g, '');
+    const withCountryCode = digits.length === 10 ? `91${digits}` : digits;
+    const message = encodeURIComponent(statusMessage(c));
+    return `https://wa.me/${withCountryCode}?text=${message}`;
+}
 
 const columns = [
     { status: 'pending', label: 'Pending', color: '#D97706' },
@@ -136,9 +161,23 @@ const Board = () => {
                                         </Box>
                                     )}
 
-                                    <Button component={Link} to={`/edit/${c._id}`} size="small" sx={{ mt: 1, fontSize: 12 }}>
-                                        Edit details
-                                    </Button>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 1 }}>
+                                        <Button component={Link} to={`/edit/${c._id}`} size="small" sx={{ fontSize: 12 }}>
+                                            Edit details
+                                        </Button>
+                                        <Tooltip title="Message on WhatsApp">
+                                            <IconButton
+                                                size="small"
+                                                component="a"
+                                                href={whatsappLink(c)}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                sx={{ color: '#25D366' }}
+                                            >
+                                                <WhatsAppIcon fontSize="small" />
+                                            </IconButton>
+                                        </Tooltip>
+                                    </Box>
                                 </Paper>
                             ))}
                         </Box>

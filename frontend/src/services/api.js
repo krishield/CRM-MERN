@@ -4,6 +4,14 @@ export const login = async (username, password) => {
     return await apiClient.post('/login', { username, password });
 }
 
+export const getSetupStatus = async () => {
+    return await apiClient.get('/setup-status');
+}
+
+export const setupAdmin = async (username, password) => {
+    return await apiClient.post('/setup', { username, password });
+}
+
 export const addCustomer = async (data) => {
     try {
         return await apiClient.post('/add', data)

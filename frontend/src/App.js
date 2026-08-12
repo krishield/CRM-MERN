@@ -1,4 +1,5 @@
 import './App.css';
+import { useEffect, useState } from 'react';
 
 import AddCustomer from './component/AddCustomer.jsx';
 import Board from './component/Board.jsx';
@@ -6,22 +7,37 @@ import AllCustomers from './component/AllCustomers.jsx';
 import EditCustomer from './component/EditCustomer.jsx';
 import Details from './component/CustomerDetail.jsx';
 import LoginForm from './component/Login.jsx'
+import SetupAdmin from './component/SetupAdmin.jsx'
 import AllOrders from './component/AllOrders.jsx';
 import Orders from './component/Orders.jsx';
 import SettingsPage from './component/Settings.jsx';
 import Revenue from './component/Revenue.jsx';
 import PrivateRoute from './component/PrivateRoute.jsx';
 import LockedPage from './component/LockedPage.jsx';
+import { getSetupStatus } from './services/api.js';
 
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 
 function App() {
+  const [needsSetup, setNeedsSetup] = useState(null);
+
+  useEffect(() => {
+    getSetupStatus()
+      .then((response) => setNeedsSetup(response.data.needsSetup))
+      .catch(() => setNeedsSetup(false));
+  }, []);
+
+  if (needsSetup === null) {
+    return null;
+  }
+
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path='/login' element={<LoginForm />} />
-          <Route path='/' element={<Navigate to="/dashboard" replace />} />
+          <Route path='/setup' element={needsSetup ? <SetupAdmin /> : <Navigate to="/login" replace />} />
+          <Route path='/login' element={needsSetup ? <Navigate to="/setup" replace /> : <LoginForm />} />
+          <Route path='/' element={<Navigate to={needsSetup ? "/setup" : "/dashboard"} replace />} />
           <Route path='/dashboard' element={<PrivateRoute><Board /></PrivateRoute>} />
           <Route path='/add' element={<PrivateRoute><AddCustomer /></PrivateRoute>} />
           <Route path='/all' element={<PrivateRoute><LockedPage><AllCustomers /></LockedPage></PrivateRoute>} />

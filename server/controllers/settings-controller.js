@@ -1,22 +1,38 @@
 import bcrypt from "bcryptjs";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 import Settings from '../schema/settings-schema.js'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const envPath = path.join(__dirname, "..", ".env");
+
+const updateAdminPassHashInEnv = (newHash) => {
+    const lines = fs.readFileSync(envPath, "utf-8").split("\n");
+    let found = false;
+    const updated = lines.map((line) => {
+        if (line.startsWith("ADMIN_PASS_HASH=")) {
+            found = true;
+            return `ADMIN_PASS_HASH=${newHash}`;
+        }
+        return line;
+    });
+    if (!found) updated.push(`ADMIN_PASS_HASH=${newHash}`);
+    fs.writeFileSync(envPath, updated.join("\n"));
+    process.env.ADMIN_PASS_HASH = newHash;
+};
 
 const getOrCreateSettings = async () => {
     let settings = await Settings.findOne({});
     if (!settings) {
         settings = new Settings({});
-    }
-    if (!settings.adminPasswordHash && process.env.ADMIN_PASS_HASH) {
-        settings.adminPasswordHash = process.env.ADMIN_PASS_HASH;
-    }
-    if (settings.isNew || settings.isModified()) {
         await settings.save();
     }
     return settings;
 }
 
 const stripSecrets = (settings) => {
-    const { adminPasswordHash, ownerPinHash, ...safeSettings } = settings.toObject();
+    const { ownerPinHash, ...safeSettings } = settings.toObject();
     return { ...safeSettings, ownerPinSet: !!ownerPinHash };
 }
 
@@ -52,13 +68,11 @@ export const changePassword = async (request, response) => {
         if (!newPassword || newPassword.length < 4) {
             return response.status(409).json({ message: 'New password must be at least 4 characters' });
         }
-        const settings = await getOrCreateSettings();
-        const validCurrent = await bcrypt.compare(currentPassword || '', settings.adminPasswordHash);
+        const validCurrent = await bcrypt.compare(currentPassword || '', process.env.ADMIN_PASS_HASH || '');
         if (!validCurrent) {
             return response.status(403).json({ message: 'Current password is incorrect' });
         }
-        settings.adminPasswordHash = bcrypt.hashSync(newPassword, 10);
-        await settings.save();
+        updateAdminPassHashInEnv(bcrypt.hashSync(newPassword, 10));
         response.status(200).json({ message: 'Password updated' });
     } catch (error) {
         response.status(409).json({ message: error.message })

@@ -1,5 +1,9 @@
 import express from "express";
 import dotenv from "dotenv";
+import fs from "fs";
+import path from "path";
+import crypto from "crypto";
+import { fileURLToPath } from "url";
 import Connection from "./db.js";
 import authRoutes from "./routes/auth-routes.js";
 import customerRoutes from "./routes/customer-routes.js";
@@ -8,7 +12,17 @@ import settingsRoutes from "./routes/settings-routes.js";
 import cors from 'cors'
 import bodyParser from "body-parser";
 
-dotenv.config();
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const envPath = path.join(__dirname, ".env");
+if (!fs.existsSync(envPath)) {
+    const jwtSecret = crypto.randomBytes(32).toString("hex");
+    fs.writeFileSync(
+        envPath,
+        `MONGO_URI=mongodb://localhost:27017/crm\nJWT_SECRET=${jwtSecret}\n`
+    );
+}
+
+dotenv.config({ path: envPath });
 
 const app = express()
 

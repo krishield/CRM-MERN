@@ -1,26 +1,20 @@
 @echo off
 cd /d "%~dp0"
 
-if not exist server\.env (
-    echo First time running this? Double-click setup.bat first.
-    pause
-    exit /b 1
-)
-
 if not exist node_modules (
-    echo Dependencies not installed yet. Double-click setup.bat first.
+    echo Dependencies not installed yet. Double-click install.bat first.
     pause
     exit /b 1
 )
 
 if not exist server\node_modules (
-    echo Server dependencies not installed yet. Double-click setup.bat first.
+    echo Server dependencies not installed yet. Double-click install.bat first.
     pause
     exit /b 1
 )
 
 if not exist frontend\node_modules (
-    echo Frontend dependencies not installed yet. Double-click setup.bat first.
+    echo Frontend dependencies not installed yet. Double-click install.bat first.
     pause
     exit /b 1
 )

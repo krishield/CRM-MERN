@@ -12,21 +12,13 @@ Local customer/repair-order CRM for the shop.
      git clone https://github.com/krishield/CRM-MERN.git
      ```
    - **Simpler, but no easy updates:** on the GitHub page, green "Code" button → "Download ZIP" → unzip it somewhere (e.g. Desktop).
-4. **Install dependencies.** Open Command Prompt in the project folder and run:
-     ```
-     npm install
-     cd server
-     npm install
-     cd ../frontend
-     npm install
-     cd ..
-     ```
+4. **Double-click `install.bat`** inside the project folder. It checks Node/MongoDB are installed and installs all dependencies.
 5. **Double-click `start-app.bat`** to run the app. It opens at [http://localhost:4000](http://localhost:4000) in your browser.
 6. **Login** with the default credentials:
    - Username: `admin`
    - Password: `9595`
 
-   These come from `server/.env` (auto-created on first server start). To change them, edit `ADMIN_USER`/`ADMIN_PASS_HASH` in `server/.env` — generate a new hash with:
+   These live in `server/.env` (auto-created by `install.bat`/first server start). To change them, edit `ADMIN_USER`/`ADMIN_PASS_HASH` in `server/.env` — generate a new hash with:
      ```
      cd server
      node scripts/generate-password-hash.js "your-new-password"
@@ -39,16 +31,17 @@ Just double-click `start-app.bat`. That's it — MongoDB runs automatically in t
 
 Leave the black window open while using the app; closing it stops the app. Your customer data is saved on the PC and is not affected by starting, stopping, or restarting the app or the computer.
 
+### Forgot the password?
+
+Double-click `reset-password.bat`. It resets the login back to the default (`admin` / `9595`), no need to touch any files by hand. Log in with that, then change the password from the Settings page if you want something else.
+
 ### Getting updates
 
 If you cloned with `git` (see step 3 above), pull and reinstall any time:
 ```
 git pull
-npm install
-cd server && npm install && cd ..
-cd frontend && npm install && cd ..
 ```
-Then start the app as usual. This doesn't touch your data or login.
+then double-click `install.bat` again (safe to re-run, doesn't touch your data or login), and start the app as usual.
 
 If you used the ZIP download instead, download a fresh ZIP and copy the files over (not `.env`, not `node_modules`) instead.
 
@@ -87,5 +80,6 @@ Then create `server/.env` yourself (copy `server/.env.example`) with that hash i
 ## Notes
 
 - Customer IDs are sequential (`KD001`, `KD002`, ...), assigned automatically.
-- `server/.env` and `frontend/.env` are gitignored — each machine gets its own (`server/.env` auto-created with default `admin`/`9595` on first run; `frontend/.env` needs the one manual line above).
-- Forgot the password? Delete `server/.env` and restart the app — it regenerates with the default `admin`/`9595` login.
+- `server/.env` and `frontend/.env` are gitignored — each machine gets its own (`server/.env` auto-created with default `admin`/`9595` on first run; `frontend/.env` needs the one manual line above, dev only).
+- Login (username/password) is checked against `server/.env` only — it works even if MongoDB isn't running. Everything else (customers, orders, settings) needs MongoDB connected.
+- Forgot the password? Run `reset-password.bat` (Windows) or `node server/scripts/reset-password.js` (Mac/Linux) — resets to `admin`/`9595`.

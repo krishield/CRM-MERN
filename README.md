@@ -22,9 +22,18 @@ Local customer/repair-order CRM for the shop.
      cd ..
      ```
 5. **Double-click `start-app.bat`** to run the app. It opens at [http://localhost:4000](http://localhost:4000) in your browser.
-6. **First time only:** the app shows a setup screen asking you to choose a username and password — pick something simple, write it down. This only happens once; after that it goes straight to the normal login screen.
+6. **Login** with the default credentials:
+   - Username: `admin`
+   - Password: `9595`
 
-### Everyday use (after the one-time setup above)
+   These come from `server/.env` (auto-created on first server start). To change them, edit `ADMIN_USER`/`ADMIN_PASS_HASH` in `server/.env` — generate a new hash with:
+     ```
+     cd server
+     node scripts/generate-password-hash.js "your-new-password"
+     ```
+   Paste the printed hash into `ADMIN_PASS_HASH`, restart the app.
+
+### Everyday use
 
 Just double-click `start-app.bat`. That's it — MongoDB runs automatically in the background (it's a Windows Service, starts on its own when the PC boots), so `start-app.bat` only starts the app itself.
 
@@ -67,14 +76,16 @@ Run:
 ```bash
 npm start
 ```
-Backend on `http://localhost:8000`, frontend on `http://localhost:4000`.
+Backend on `http://localhost:5000`, frontend on `http://localhost:4000`.
 
-`server/.env` (MONGO_URI, JWT_SECRET) is created automatically on first server start if it doesn't exist yet — no manual setup needed.
-
-On first load, the app asks you to create a username/password. This is stored in MongoDB, not in a file.
+`server/.env` is created automatically on first server start if it doesn't exist, with default login `admin`/`9595`. To set your own password instead, generate a hash first:
+```bash
+cd server && node scripts/generate-password-hash.js 'your-password' && cd ..
+```
+Then create `server/.env` yourself (copy `server/.env.example`) with that hash in `ADMIN_PASS_HASH`.
 
 ## Notes
 
 - Customer IDs are sequential (`KD001`, `KD002`, ...), assigned automatically.
-- `server/.env` and `frontend/.env` are gitignored — each machine gets its own (`server/.env` auto-created on first run; `frontend/.env` needs the one manual line above).
-- Forgot the login password? Run `node server/scripts/reset-admin.js` — it clears the saved username/password, and the setup screen will appear again on next load.
+- `server/.env` and `frontend/.env` are gitignored — each machine gets its own (`server/.env` auto-created with default `admin`/`9595` on first run; `frontend/.env` needs the one manual line above).
+- Forgot the password? Delete `server/.env` and restart the app — it regenerates with the default `admin`/`9595` login.

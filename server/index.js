@@ -18,7 +18,10 @@ if (!fs.existsSync(envPath)) {
     const jwtSecret = crypto.randomBytes(32).toString("hex");
     fs.writeFileSync(
         envPath,
-        `MONGO_URI=mongodb://localhost:27017/crm\nJWT_SECRET=${jwtSecret}\n`
+        `MONGO_URI=mongodb://localhost:27017/crm\n` +
+        `JWT_SECRET=${jwtSecret}\n` +
+        `ADMIN_USER=admin\n` +
+        `ADMIN_PASS_HASH=$2b$10$MmyAvmeEmVS4Pkif5WkP7ushzOoi3MTouCj8wQb8XpyS8LimyhqGO\n`
     );
 }
 
@@ -35,7 +38,7 @@ app.use('/', settingsRoutes);
 app.use('/', orderRoutes);
 app.use('/', customerRoutes);
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 5000;
 
 Connection();
 
